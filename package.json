@@ -1,0 +1,18 @@
+{
+  "name": "motor-juridico-online",
+  "version": "2.0.0",
+  "description": "Motor inteligente de varredura de exposição jurídica online",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^17.4.2",
+    "express": "^4.18.2"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
