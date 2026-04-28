@@ -3,7 +3,7 @@
    script-scanner.js
 ===================================================== */
 
-const API_BASE = "https://coveted-lustrous-cheesy.ngrok-free.dev";
+const API_BASE = "https://mais-justica-api.onrender.com";
 
 let isLoading = false;
 
