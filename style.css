@@ -1,5 +1,10 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Sora:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+
 /* ══════════════════════════════════════ MAIS JUSTIÇA — style.css Premium dark SaaS landing page ══════════════════════════════════════ */
 :root  {
+  --font-body: 'Inter', sans-serif;
+  --font-heading: 'Sora', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
   --bg-deep: #04040e;
   --bg-dark: #090915;
   --card: #10111f;
@@ -13,7 +18,7 @@
   --red: #f97066;
   --yellow: #fbbf24;
   --text: #e2e4f0;
-  --muted: #5b607a;
+  --muted: #8d91aa;
   --border: rgba(139,92,246,.12);
   --border-sub: rgba(255,255,255,.05);
   --glow-purple: 0 0 60px rgba(139,92,246,.25);
@@ -39,15 +44,18 @@ html  {
 body  {
   background: var(--bg-deep);
   color: var(--text);
-  font-family: 'DM Sans', sans-serif;
+  font-family: var(--font-body);
   font-size: 16px;
+  letter-spacing: -0.01em;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
   line-height: 1.7;
   overflow-x: hidden;
   cursor: none;
 
 }
 .mono  {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: var(--font-mono);
 
 }
 
@@ -80,7 +88,7 @@ body  {
   display: flex;
   align-items: center;
   gap: 12px;
-  font-family: 'Syne', sans-serif;
+  font-family: var(--font-heading);
   font-weight: 700;
   font-size: 20px;
   color: var(--text);
@@ -281,7 +289,7 @@ header.scrolled  {
   display: flex;
   align-items: center;
   gap: 10px;
-  font-family: 'Syne', sans-serif;
+  font-family: var(--font-heading);
   font-weight: 700;
   font-size: 17px;
   color: var(--text);
@@ -333,7 +341,7 @@ nav a:hover  {
   gap: 8px;
   padding: 11px 22px;
   border-radius: var(--radius-sm);
-  font-family: 'Syne', sans-serif;
+  font-family: var(--font-heading);
   font-weight: 600;
   font-size: 14px;
   cursor: none;
@@ -402,7 +410,7 @@ nav a:hover  {
   background: linear-gradient(135deg, var(--purple), var(--blue));
   color: #fff;
   border-radius: 100px;
-  font-family: 'Syne', sans-serif;
+  font-family: var(--font-heading);
   font-weight: 600;
   font-size: 14px;
   text-decoration: none;
@@ -500,11 +508,11 @@ nav a:hover  {
 
 }
 .hero-headline  {
-  font-family: 'Syne', sans-serif;
-  font-size: clamp(38px, 5vw, 62px);
+  font-family: var(--font-heading);
+  font-size: clamp(42px, 5.6vw, 72px);
   font-weight: 800;
-  line-height: 1.08;
-  letter-spacing: -2px;
+  line-height: .98;
+  letter-spacing: -0.055em;
   margin-bottom: 24px;
 
 }
@@ -538,11 +546,12 @@ nav a:hover  {
 
 }
 .stat-num  {
-  font-family: 'Syne', sans-serif;
+  font-family: var(--font-heading);
   font-size: 30px;
   font-weight: 800;
   color: var(--text);
   line-height: 1;
+  letter-spacing: -0.04em;
 
 }
 .stat-label  {
@@ -810,7 +819,7 @@ nav a:hover  {
 
 }
 .ring-pct  {
-  font-family: 'Syne', sans-serif;
+  font-family: var(--font-heading);
   font-size: 13px;
   font-weight: 800;
   color: var(--red);
@@ -824,7 +833,7 @@ nav a:hover  {
 
 }
 .exposure-info h4  {
-  font-family: 'Syne', sans-serif;
+  font-family: var(--font-heading);
   font-size: 14px;
   font-weight: 700;
   margin-bottom: 4px;
@@ -936,7 +945,7 @@ nav a:hover  {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: var(--font-mono);
   font-size: 11px;
   font-weight: 500;
   letter-spacing: 3px;
@@ -954,11 +963,11 @@ nav a:hover  {
 
 }
 .section-headline  {
-  font-family: 'Syne', sans-serif;
-  font-size: clamp(28px, 3.5vw, 44px);
+  font-family: var(--font-heading);
+  font-size: clamp(30px, 3.8vw, 52px);
   font-weight: 800;
-  letter-spacing: -1.5px;
-  line-height: 1.12;
+  letter-spacing: -0.05em;
+  line-height: 1.03;
   margin-bottom: 20px;
 
 }
@@ -1060,7 +1069,7 @@ nav a:hover  {
 
 }
 .pain-card h4  {
-  font-family: 'Syne', sans-serif;
+  font-family: var(--font-heading);
   font-size: 14px;
   font-weight: 700;
   margin-bottom: 4px;
@@ -1159,7 +1168,7 @@ nav a:hover  {
 
 }
 .step-num  {
-  font-family: 'Syne', sans-serif;
+  font-family: var(--font-heading);
   font-size: 52px;
   font-weight: 800;
   color: rgba(139,92,246,.12);
@@ -1181,7 +1190,7 @@ nav a:hover  {
 
 }
 .step-card h3  {
-  font-family: 'Syne', sans-serif;
+  font-family: var(--font-heading);
   font-size: 19px;
   font-weight: 700;
   margin-bottom: 12px;
@@ -1283,7 +1292,7 @@ nav a:hover  {
 
 }
 .benefit-card h4  {
-  font-family: 'Syne', sans-serif;
+  font-family: var(--font-heading);
   font-size: 15px;
   font-weight: 700;
   margin-bottom: 6px;
@@ -1323,7 +1332,7 @@ nav a:hover  {
 
 }
 .quote-mark  {
-  font-family: 'Syne', sans-serif;
+  font-family: var(--font-heading);
   font-size: 56px;
   color: var(--purple);
   opacity: .25;
@@ -1354,7 +1363,7 @@ nav a:hover  {
   justify-content: center;
   font-size: 18px;
   font-weight: 700;
-  font-family: 'Syne', sans-serif;
+  font-family: var(--font-heading);
   flex-shrink: 0;
 
 }
@@ -1444,7 +1453,7 @@ nav a:hover  {
 
 }
 .objection-q h4  {
-  font-family: 'Syne', sans-serif;
+  font-family: var(--font-heading);
   font-size: 15px;
   font-weight: 700;
   line-height: 1.35;
@@ -1494,10 +1503,11 @@ nav a:hover  {
 
 }
 .cta-headline  {
-  font-family: 'Syne', sans-serif;
-  font-size: clamp(28px, 4vw, 48px);
+  font-family: var(--font-heading);
+  font-size: clamp(30px, 4.5vw, 56px);
   font-weight: 800;
-  letter-spacing: -1.5px;
+  letter-spacing: -0.055em;
+  line-height: 1.02;
   margin-bottom: 18px;
 
 }
@@ -1567,7 +1577,7 @@ nav a:hover  {
   align-items: center;
   padding: 22px 0;
   cursor: none;
-  font-family: 'Syne', sans-serif;
+  font-family: var(--font-heading);
   font-size: 15px;
   font-weight: 600;
   transition: color .2s;
@@ -1639,7 +1649,7 @@ footer  {
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  font-family: "Syne", sans-serif;
+  font-family: var(--font-heading);
   font-weight: 700;
   font-size: 16px;
   color: var(--text);
