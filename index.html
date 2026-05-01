@@ -4,10 +4,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Mais Justiça — Controle sua Exposição Digital</title>
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Sora:wght@500;600;700;800&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Sora:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
 <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
 <!-- PRELOADER -->
@@ -28,13 +32,11 @@
 <div id="cursor"></div>
 <div id="cursor-follower"></div>
 
-<!-- ORBS -->
+<!-- AMBIENT BACKGROUND -->
 <div class="orb orb-1"></div>
 <div class="orb orb-2"></div>
 <div class="orb orb-3"></div>
 <div class="orb orb-4"></div>
-
-<!-- GRID OVERLAY -->
 <div class="grid-overlay"></div>
 
 <!-- FLOATING CTA -->
@@ -46,181 +48,243 @@
 <!-- HEADER -->
 <header id="header">
   <div class="container header-inner">
-    <a href="#" class="logo">
-      <img src="assets/logo.png" class="logo-img" alt="Mais Justiça">
-      Mais Justiça
-    </a>
+    <!-- FOOTER LOGO -->
+  <a href="index.html" class="logo footer-logo">
+    <img src="assets/logo.png" class="logo-img" alt="Mais Justiça">
+    <span>Mais Justiça</span>
+  </a>
     <nav>
       <a href="#how">Como funciona</a>
       <a href="#benefits">Benefícios</a>
       <a href="#proof">Depoimentos</a>
       <a href="#faq">FAQ</a>
     </nav>
-    <a href="scanner.html" class="btn btn-primary">Analisar meu nome →</a>
+
+    <a href="scanner.html" class="btn btn-primary header-btn">
+      Analisar meu nome →
+    </a>
   </div>
 </header>
 
-<!-- HERO -->
-<section id="hero">
-  <div class="hero-bg-grid"></div>
-  <div class="container">
-    <div class="hero-grid">
-      <div class="hero-content" id="heroParallax">
-        <div class="badge" data-reveal>
-          <span class="badge-dot"></span>
-          Sistema Ativo — Monitoramento em tempo real
-        </div>
-        <h1 class="hero-headline" data-reveal>
-          Seu nome pode estar<br>
-          <span class="gradient-text">exposto online.</span><br>
-          Entenda o risco.
-        </h1>
-        <p class="hero-sub" data-reveal>
-          O Mais Justiça identifica possíveis exposições públicas do seu nome em plataformas jurídicas e fontes digitais abertas — e orienta você sobre como agir para proteger sua imagem e privacidade.
-        </p>
-        <div class="hero-ctas" data-reveal>
-          <a href="scanner.html" class="btn btn-primary btn-large magnetic">
-            🔍 Fazer análise agora
-          </a>
-          <a href="#how" class="btn btn-outline btn-large magnetic">
-            Ver como funciona
-          </a>
-        </div>
-        <div class="hero-stats" data-reveal>
-          <div class="stat">
-            <div class="stat-num" data-count="800">0</div>
-            <div class="stat-label">Análises realizadas</div>
-          </div>
-          <div class="stat-divider"></div>
-          <div class="stat">
-            <div class="stat-num" data-count="97">0</div>
-            <div class="stat-label">% de satisfação</div>
-          </div>
-          <div class="stat-divider"></div>
-          <div class="stat">
-            <div class="stat-num">96h</div>
-            <div class="stat-label">Resultado médio</div>
-          </div>
-        </div>
-        <div class="scroll-indicator" data-reveal>
-          <div class="scroll-line"></div>
-          <span class="mono">scroll</span>
-        </div>
+<!-- ══════════════════════════════════════════════ HERO ══ -->
+<section class="hero">
+  <div class="hero-inner">
+
+    <!-- LEFT -->
+    <div class="hero-left">
+      <span class="badge">
+        <span class="bpulse"></span>
+        Sistema ativo &nbsp;·&nbsp; Monitoramento inteligente
+      </span>
+
+      <div class="hero-headline">
+        <h1 class="hl">Controle sua</h1>
+        <h1 class="hl"><span class="hl-grad">exposição digital</span></h1>
       </div>
 
-      <!-- DASHBOARD MOCKUP -->
-      <div class="dashboard-mockup" id="dashMockup" data-reveal>
-        <!-- Floating accent cards -->
-        <div class="float-card float-card-1">
-          <span class="float-card-icon">🔒</span>
-          <span class="float-card-text">Criptografia ativa</span>
-        </div>
-        <div class="float-card float-card-2">
-          <span class="float-card-icon">⚡</span>
-          <span class="float-card-text">Análise em 96h</span>
-        </div>
+      <p class="sub">
+        Identifique onde seu nome aparece publicamente na internet e entenda quais ações podem ser tomadas para proteger sua imagem e privacidade.
+      </p>
 
-        <div class="dash-window">
-          <div class="dash-titlebar">
-            <div class="dash-dots">
-              <div class="dash-dot dash-dot-r"></div>
-              <div class="dash-dot dash-dot-y"></div>
-              <div class="dash-dot dash-dot-g"></div>
-            </div>
-            <span class="dash-title mono">Mais Justiça — Painel de Exposição</span>
-            <div class="dash-status">
-              <span class="dash-status-dot"></span>
-              <span class="mono" style="font-size:10px">LIVE</span>
-            </div>
-          </div>
-          <div class="dash-body">
-            <!-- Risk Ring -->
-            <div class="exposure-ring" id="exposureRing">
-              <div class="ring-visual">
-                <svg class="ring-svg" viewBox="0 0 80 80">
-                  <circle class="ring-bg" cx="40" cy="40" r="28"/>
-                  <circle class="ring-fill" cx="40" cy="40" r="28" id="riskRing"/>
-                </svg>
-                <div class="ring-label">
-                  <span class="ring-pct" id="riskPct">0%</span>
-                  <span class="ring-txt mono">RISCO</span>
-                </div>
-              </div>
-              <div class="exposure-info">
-                <h4>Exposição Detectada</h4>
-                <span class="exposure-badge">Nível Alto</span>
-                <p>Possíveis aparições identificadas em fontes públicas. Orientação estratégica disponível.</p>
-              </div>
-            </div>
-
-            <!-- Sources -->
-            <div class="sources-list">
-              <div class="source-row" style="--delay:0.1s">
-                <div class="source-icon" style="background:rgba(255,111,111,.12)">⚖</div>
-                <div class="source-info">
-                  <div class="source-name">Jusbrasil</div>
-                  <div class="source-detail mono">possíveis aparições detectadas</div>
-                </div>
-                <span class="risk-tag risk-high">Alto</span>
-              </div>
-              <div class="source-row" style="--delay:0.2s">
-                <div class="source-icon" style="background:rgba(255,211,123,.12)">🔍</div>
-                <div class="source-info">
-                  <div class="source-name">Escavador</div>
-                  <div class="source-detail mono">perfil público localizado</div>
-                </div>
-                <span class="risk-tag risk-med">Médio</span>
-              </div>
-              <div class="source-row" style="--delay:0.3s">
-                <div class="source-icon" style="background:rgba(74,125,255,.12)">🌐</div>
-                <div class="source-info">
-                  <div class="source-name">Google Search</div>
-                  <div class="source-detail mono">indexações monitoradas</div>
-                </div>
-                <span class="risk-tag risk-med">Médio</span>
-              </div>
-              <div class="source-row" style="--delay:0.4s">
-                <div class="source-icon" style="background:rgba(102,226,167,.12)">📋</div>
-                <div class="source-info">
-                  <div class="source-name">Diário Oficial</div>
-                  <div class="source-detail mono">publicação encontrada</div>
-                </div>
-                <span class="risk-tag risk-low">Baixo</span>
-              </div>
-            </div>
-
-            <!-- Scan line animation -->
-            <div class="scan-line"></div>
-          </div>
-        </div>
+      <div class="ctas">
+        <a href="scanner.html" class="btn-p">
+          <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
+            <circle cx="7.5" cy="7.5" r="6.5" stroke="rgba(255,255,255,.50)" stroke-width="1"/>
+            <path d="M6 5.2l4 2.3-4 2.3V5.2z" fill="white"/>
+          </svg>
+          Fazer análise agora
+        </a>
+        <a href="#how" class="btn-g">
+          <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
+            <path d="M2.5 7.5h10M9 4l3.5 3.5L9 11" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Ver como funciona
+        </a>
       </div>
 
+      <div class="hero-stats">
+        <div class="st"><span class="st-n">+800</span><span class="st-l">análises</span></div>
+        <div class="st"><span class="st-n">97%</span><span class="st-l">satisfação</span></div>
+        <div class="st"><span class="st-n">96h</span><span class="st-l">resultado médio</span></div>
+      </div>
     </div>
-  </div>
+
+    <!-- RIGHT SCENE -->
+    <div class="scene">
+      <div class="ga ga-pm"></div>
+      <div class="ga ga-ba"></div>
+      <div class="ga ga-pl"></div>
+      <div class="db-shadow"></div>
+      <div class="db-contact"></div>
+
+      <!-- 3D wrapper -->
+      <div class="db3d">
+
+        <!-- Floating cards -->
+        <div class="fc fc-r">
+          <div class="fi fi-g">
+            <svg viewBox="0 0 15 15" fill="none">
+              <path d="M7.5 1.5L13 4v4c0 3-2.4 5.5-5.5 6.5C4.4 13.5 2 11 2 8V4l5.5-2.5z" stroke="#10d9a0" stroke-width="1.3"/>
+              <path d="M5 7.5l2 2 3.5-3.5" stroke="#10d9a0" stroke-width="1.3" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div class="ft"><span class="fl">LGPD ativa</span><span class="fv fvg">Protegido</span></div>
+        </div>
+
+        <div class="fc fc-l">
+          <div class="fi fi-r">
+            <svg viewBox="0 0 15 15" fill="none">
+              <path d="M7.5 2L13.5 13H1.5L7.5 2Z" stroke="#f97066" stroke-width="1.3" stroke-linejoin="round"/>
+              <path d="M7.5 5.5v3" stroke="#f97066" stroke-width="1.3" stroke-linecap="round"/>
+              <circle cx="7.5" cy="10.5" r=".6" fill="#f97066"/>
+            </svg>
+          </div>
+          <div class="ft"><span class="fl">Novo alerta</span><span class="fv fvr">3 novas fontes</span></div>
+        </div>
+
+        <!-- DASHBOARD -->
+        <div class="db">
+          <div class="db-shine"></div>
+          <div class="db-iglow"></div>
+
+          <svg width="0" height="0" style="position:absolute;overflow:hidden">
+            <defs>
+              <linearGradient id="dg" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stop-color="#f59e0b"/>
+                <stop offset="55%" stop-color="#ef4444"/>
+                <stop offset="100%" stop-color="#f97066"/>
+              </linearGradient>
+            </defs>
+          </svg>
+
+          <!-- Topbar -->
+          <div class="tb">
+            <div class="tb-l">
+              <div class="tb-icon">
+                <svg viewBox="0 0 15 15" fill="none">
+                  <rect x="1.5" y="1.5" width="5" height="5" rx="1.5" fill="rgba(255,255,255,.95)"/>
+                  <rect x="8.5" y="1.5" width="5" height="5" rx="1.5" fill="rgba(255,255,255,.55)"/>
+                  <rect x="1.5" y="8.5" width="5" height="5" rx="1.5" fill="rgba(255,255,255,.38)"/>
+                  <rect x="8.5" y="8.5" width="5" height="5" rx="1.5" fill="rgba(255,255,255,.20)"/>
+                </svg>
+              </div>
+              <span class="tb-name">Painel de Exposição</span>
+              <div class="tb-live"><span class="lb"></span>LIVE</div>
+            </div>
+            <div class="tb-dots">
+              <div class="tdot td1"></div>
+              <div class="tdot td2"></div>
+              <div class="tdot td3"></div>
+            </div>
+          </div>
+
+          <!-- Body -->
+          <div class="db-body">
+
+            <!-- Exposure meter -->
+            <div class="db-meter">
+              <div class="dnt">
+                <svg viewBox="0 0 90 90">
+                  <circle class="dtr" cx="45" cy="45" r="36"/>
+                  <circle class="dtf" cx="45" cy="45" r="36"/>
+                </svg>
+                <div class="dc">
+                  <div class="dn">78</div>
+                  <div class="dp">%</div>
+                </div>
+              </div>
+              <div class="mi">
+                <div class="mt">Nível de exposição</div>
+                <div class="mv">78%</div>
+                <div class="ms">Risco crítico detectado</div>
+                <div class="bt"><div class="bf"></div></div>
+              </div>
+            </div>
+
+            <!-- Right info col -->
+            <div class="db-icol">
+              <div class="mc">
+                <div class="mc-l">Fontes encontradas</div>
+                <div class="mc-v">12</div>
+                <div class="mc-b mb-bl">↑ +3 novas</div>
+              </div>
+              <div class="mc">
+                <div class="mc-l">Risco atual</div>
+                <div class="mc-v" style="color:#f97066">Alto</div>
+                <div class="mc-b mb-rd">⚠ Ação urgente</div>
+              </div>
+            </div>
+
+            <!-- Source list -->
+            <div class="db-src">
+              <div class="sh">
+                <span class="st2">Fontes detectadas</span>
+                <span class="sc">12 total</span>
+              </div>
+              <div class="sr">
+                <div class="sl">
+                  <div class="sd" style="background:#f97066;box-shadow:0 0 7px rgba(249,112,102,.65)"></div>
+                  <span class="sn">Jusbrasil</span>
+                </div>
+                <span class="rp ra">Alto</span>
+              </div>
+              <div class="sr">
+                <div class="sl">
+                  <div class="sd" style="background:#fbbf24;box-shadow:0 0 7px rgba(251,191,36,.65)"></div>
+                  <span class="sn">Diário Oficial</span>
+                </div>
+                <span class="rp rm">Médio</span>
+              </div>
+              <div class="sr">
+                <div class="sl">
+                  <div class="sd" style="background:#fbbf24;box-shadow:0 0 7px rgba(251,191,36,.65)"></div>
+                  <span class="sn">Google Search</span>
+                </div>
+                <span class="rp rm">Médio</span>
+              </div>
+            </div>
+
+          </div><!-- /db-body -->
+        </div><!-- /db -->
+      </div><!-- /db3d -->
+
+      <!-- Platform ring -->
+      <div class="platform">
+        <div class="p-ring-outer"></div>
+        <div class="p-ring-mid"></div>
+        <div class="p-glow"></div>
+        <div class="p-ring-inner"></div>
+        <div class="p-shine"></div>
+      </div>
+
+    </div><!-- /scene -->
+  </div><!-- /hero-inner -->
 </section>
 
-<!-- TRUST BAR -->
+<!-- ══════════════════════════════════════════════ TRUST BAR ══ -->
 <div class="trust-bar">
   <div class="trust-track">
     <div class="trust-item"><span>🔒</span><span>Dados criptografados</span></div>
-    <div class="trust-item"><span>⚖</span><span>100% Legal e Ético</span></div>
-    <div class="trust-item"><span>🛡</span><span>Compatível com LGPD</span></div>
+    <div class="trust-item"><span>⚖️</span><span>100% Legal e Ético</span></div>
+    <div class="trust-item"><span>🛡️</span><span>Compatível com LGPD</span></div>
     <div class="trust-item"><span>🤫</span><span>Total discrição garantida</span></div>
     <div class="trust-item"><span>⚡</span><span>Análise em até 96 horas</span></div>
     <div class="trust-item"><span>🏆</span><span>+800 clientes orientados</span></div>
-    <div class="trust-item"><span>🔒</span><span>Dados criptografados</span></div>
-    <div class="trust-item"><span>⚖</span><span>100% Legal e Ético</span></div>
-    <div class="trust-item"><span>🛡</span><span>Compatível com LGPD</span></div>
-    <div class="trust-item"><span>🤫</span><span>Total discrição garantida</span></div>
-    <div class="trust-item"><span>⚡</span><span>Análise em até 96 horas</span></div>
-    <div class="trust-item"><span>🏆</span><span>+800 clientes orientados</span></div>
+    <!-- duplicated for infinite scroll -->
+    <div class="trust-item" aria-hidden="true"><span>🔒</span><span>Dados criptografados</span></div>
+    <div class="trust-item" aria-hidden="true"><span>⚖️</span><span>100% Legal e Ético</span></div>
+    <div class="trust-item" aria-hidden="true"><span>🛡️</span><span>Compatível com LGPD</span></div>
+    <div class="trust-item" aria-hidden="true"><span>🤫</span><span>Total discrição garantida</span></div>
+    <div class="trust-item" aria-hidden="true"><span>⚡</span><span>Análise em até 96 horas</span></div>
+    <div class="trust-item" aria-hidden="true"><span>🏆</span><span>+800 clientes orientados</span></div>
   </div>
 </div>
 
-<!-- PAIN SECTION -->
-<section id="pain">
+<!-- ══════════════════════════════════════════════ PAIN ══ -->
+<section id="pain" class="section-pain">
   <div class="container">
     <div class="pain-grid">
+
       <div class="reveal">
         <div class="section-tag">O Problema</div>
         <h2 class="section-headline">
@@ -230,34 +294,34 @@
         <p class="section-sub">
           A cada dia que passa, informações sobre o seu nome podem estar disponíveis para qualquer pessoa — chefes, parceiros, clientes, concorrentes. E você pode nem saber que isso está acontecendo.
         </p>
-        <br>
-        <p class="section-sub" style="font-size:15px">
+        <p class="section-sub" style="font-size:15px;margin-top:16px">
           Uma menção jurídica desatualizada ou exposição pública pode prejudicar anos de construção de imagem — em segundos.
         </p>
       </div>
-      <div class="pain-cards reveal">
-        <div class="pain-card tilt-card">
+
+      <div class="pain-cards">
+        <div class="pain-card tilt-card reveal">
           <div class="pain-icon">💼</div>
           <div>
             <h4>Perda de oportunidades profissionais</h4>
             <p>Recrutadores pesquisam seu nome antes de qualquer proposta. Uma exposição negativa pode custar oportunidades importantes.</p>
           </div>
         </div>
-        <div class="pain-card tilt-card">
+        <div class="pain-card tilt-card reveal" style="--delay:.1s">
           <div class="pain-icon">🤝</div>
           <div>
             <h4>Danos em negócios e parcerias</h4>
             <p>Sócios e investidores realizam due diligence online. Informações descontextualizadas podem travar negociações relevantes.</p>
           </div>
         </div>
-        <div class="pain-card tilt-card">
+        <div class="pain-card tilt-card reveal" style="--delay:.2s">
           <div class="pain-icon">😟</div>
           <div>
             <h4>Constrangimento e perda de controle</h4>
             <p>A incerteza sobre quem está vendo o quê sobre você é uma fonte constante de ansiedade e insegurança.</p>
           </div>
         </div>
-        <div class="pain-card tilt-card">
+        <div class="pain-card tilt-card reveal" style="--delay:.3s">
           <div class="pain-icon">🏦</div>
           <div>
             <h4>Impacto em crédito e reputação</h4>
@@ -265,14 +329,15 @@
           </div>
         </div>
       </div>
+
     </div>
   </div>
 </section>
 
-<!-- AUTHORITY / PLATFORMS -->
-<section id="authority">
+<!-- ══════════════════════════════════════════════ AUTHORITY ══ -->
+<section id="authority" class="section-authority">
   <div class="container">
-    <div style="text-align:center" class="reveal">
+    <div class="text-center reveal">
       <div class="section-tag" style="justify-content:center">Plataformas Monitoradas</div>
       <h2 class="section-headline">
         Verificamos onde<br>
@@ -280,22 +345,22 @@
       </h2>
     </div>
     <div class="platform-logos reveal">
-      <div class="plat-tag tilt-card"><span class="plat-tag-icon">⚖</span>Jusbrasil</div>
+      <div class="plat-tag tilt-card"><span class="plat-tag-icon">⚖️</span>Jusbrasil</div>
       <div class="plat-tag tilt-card"><span class="plat-tag-icon">🔍</span>Escavador</div>
       <div class="plat-tag tilt-card"><span class="plat-tag-icon">📋</span>Diário Oficial</div>
-      <div class="plat-tag tilt-card"><span class="plat-tag-icon">🏛</span>Tribunais Federais</div>
-      <div class="plat-tag tilt-card"><span class="plat-tag-icon">🗂</span>Consultas Públicas</div>
+      <div class="plat-tag tilt-card"><span class="plat-tag-icon">🏛️</span>Tribunais Federais</div>
+      <div class="plat-tag tilt-card"><span class="plat-tag-icon">🗂️</span>Consultas Públicas</div>
       <div class="plat-tag tilt-card"><span class="plat-tag-icon">🌐</span>Google Search</div>
       <div class="plat-tag tilt-card"><span class="plat-tag-icon">🔗</span>E muito mais</div>
     </div>
   </div>
 </section>
 
-<!-- HOW IT WORKS -->
-<section id="how">
+<!-- ══════════════════════════════════════════════ HOW ══ -->
+<section id="how" class="section-how">
   <div class="container">
-    <div style="text-align:center" class="reveal">
-      <div class="section-tag">Como Funciona</div>
+    <div class="text-center reveal">
+      <div class="section-tag" style="justify-content:center">Como Funciona</div>
       <h2 class="section-headline">
         Três etapas para<br>
         <span class="gradient-text">assumir o controle</span>
@@ -313,16 +378,16 @@
         <p>Nosso sistema verifica fontes públicas, plataformas jurídicas e diários oficiais buscando possíveis aparições do seu nome. Em até 96 horas, você recebe um relatório orientativo completo.</p>
         <div class="step-line"></div>
       </div>
-      <div class="step-card tilt-card reveal">
+      <div class="step-card tilt-card reveal" style="--delay:.15s">
         <div class="step-num">02</div>
         <div class="step-icon">📊</div>
         <h3>Classificação de Risco</h3>
         <p>Cada fonte identificada é avaliada por nível de risco e impacto potencial. Você vê com clareza o que pode necessitar de atenção prioritária e o que pode ser monitorado ao longo do tempo.</p>
         <div class="step-line"></div>
       </div>
-      <div class="step-card tilt-card reveal">
+      <div class="step-card tilt-card reveal" style="--delay:.3s">
         <div class="step-num">03</div>
-        <div class="step-icon">🛡</div>
+        <div class="step-icon">🛡️</div>
         <h3>Orientação e Estratégia</h3>
         <p>Para cada exposição identificada, você recebe orientação estratégica personalizada. Nossa equipe apoia as solicitações de desindexação e controle de visibilidade baseadas na legislação vigente.</p>
         <div class="step-line"></div>
@@ -337,54 +402,53 @@
   </div>
 </section>
 
-<!-- BENEFITS -->
-<section id="benefits">
+<!-- ══════════════════════════════════════════════ BENEFITS ══ -->
+<section id="benefits" class="section-benefits">
   <div class="container">
-    <div style="text-align:center" class="reveal">
-      <div class="section-tag">Benefícios</div>
+    <div class="text-center reveal">
+      <div class="section-tag" style="justify-content:center">Benefícios</div>
       <h2 class="section-headline">
         Mais do que proteção.<br>
         <span class="gradient-text">É liberdade digital.</span>
       </h2>
     </div>
-
     <div class="benefits-grid">
       <div class="benefit-card tilt-card reveal">
-        <div class="benefit-icon benefit-icon-purple">🛡</div>
+        <div class="benefit-icon benefit-icon-purple">🛡️</div>
         <div>
           <h4>Visibilidade Clara da sua Exposição</h4>
           <p>Pela primeira vez, você tem um panorama real — cada menção identificada, cada risco potencial classificado. Nenhuma surpresa desagradável.</p>
         </div>
       </div>
-      <div class="benefit-card tilt-card reveal">
+      <div class="benefit-card tilt-card reveal" style="--delay:.1s">
         <div class="benefit-icon benefit-icon-blue">⚡</div>
         <div>
           <h4>Orientação Rápida e Objetiva</h4>
           <p>Não apenas informação — um plano orientativo claro para cada situação. Você sabe o que pode ser feito, com que base legal e como agir.</p>
         </div>
       </div>
-      <div class="benefit-card tilt-card reveal">
+      <div class="benefit-card tilt-card reveal" style="--delay:.2s">
         <div class="benefit-icon benefit-icon-green">🔄</div>
         <div>
           <h4>Monitoramento Contínuo</h4>
           <p>Alertas se seu nome aparecer em novas fontes. A atenção à sua privacidade não termina com o primeiro relatório.</p>
         </div>
       </div>
-      <div class="benefit-card tilt-card reveal">
+      <div class="benefit-card tilt-card reveal" style="--delay:.1s">
         <div class="benefit-icon benefit-icon-yellow">🤫</div>
         <div>
           <h4>Total Discrição e Confidencialidade</h4>
           <p>Seus dados, análises e estratégias são completamente privados, com criptografia de nível bancário. O que acontece aqui, fica aqui.</p>
         </div>
       </div>
-      <div class="benefit-card tilt-card reveal">
-        <div class="benefit-icon benefit-icon-purple">⚖</div>
+      <div class="benefit-card tilt-card reveal" style="--delay:.2s">
+        <div class="benefit-icon benefit-icon-purple">⚖️</div>
         <div>
           <h4>Processo 100% Legal e Ético</h4>
           <p>Todas as orientações são baseadas na LGPD, Marco Civil da Internet e direitos constitucionais de privacidade. Nada irregular.</p>
         </div>
       </div>
-      <div class="benefit-card tilt-card reveal">
+      <div class="benefit-card tilt-card reveal" style="--delay:.3s">
         <div class="benefit-icon benefit-icon-blue">🏆</div>
         <div>
           <h4>Restauração da sua Imagem Digital</h4>
@@ -395,23 +459,24 @@
   </div>
 </section>
 
-<!-- TESTIMONIALS -->
-<section id="proof">
+<!-- ══════════════════════════════════════════════ TESTIMONIALS ══ -->
+<section id="proof" class="section-proof">
   <div class="container">
-    <div style="text-align:center" class="reveal">
-      <div class="section-tag">Depoimentos Reais</div>
+    <div class="text-center reveal">
+      <div class="section-tag" style="justify-content:center">Depoimentos Reais</div>
       <h2 class="section-headline">
         Quem já assumiu<br>
         <span class="gradient-text">o controle da privacidade</span>
       </h2>
     </div>
-
     <div class="testimonials-grid">
       <div class="testimonial-card tilt-card reveal">
         <div class="quote-mark">"</div>
-        <p class="testimonial-text">Tinha uma menção de anos atrás aparecendo quando pesquisavam meu nome. Perdi pelo menos dois contratos por causa disso. Em poucas semanas, o Mais Justiça me orientou e o problema foi tratado.</p>
+        <p class="testimonial-text">
+          Tinha uma menção de anos atrás aparecendo quando pesquisavam meu nome. Perdi contratos por causa disso. Em poucas semanas, o problema foi tratado.
+        </p>
         <div class="testimonial-author">
-          <div class="author-avatar" style="background:rgba(143,91,255,.2);color:var(--purple)">R</div>
+          <div class="author-avatar" style="background:rgba(143,91,255,.2);color:#a78bfa">R</div>
           <div>
             <div class="author-name">Ricardo M.</div>
             <div class="author-role">Empresário, São Paulo</div>
@@ -419,103 +484,40 @@
           </div>
         </div>
       </div>
-      <div class="testimonial-card tilt-card reveal">
+      <div class="testimonial-card tilt-card reveal" style="--delay:.15s">
         <div class="quote-mark">"</div>
-        <p class="testimonial-text">Fui preterido em uma promoção porque o gestor encontrou informações antigas ao pesquisar meu nome. O Mais Justiça me ajudou a entender o que estava acontecendo e a agir dentro da lei.</p>
+        <p class="testimonial-text">
+          Fui preterido em uma promoção por causa de informações antigas online. O Mais Justiça me mostrou exatamente como agir.
+        </p>
         <div class="testimonial-author">
-          <div class="author-avatar" style="background:rgba(74,125,255,.2);color:var(--blue)">C</div>
+          <div class="author-avatar" style="background:rgba(74,125,255,.2);color:#60a5fa">C</div>
           <div>
             <div class="author-name">Carlos A.</div>
-            <div class="author-role">Executivo, Rio de Janeiro</div>
+            <div class="author-role">Executivo</div>
             <div class="stars">★★★★★</div>
           </div>
         </div>
       </div>
-      <div class="testimonial-card tilt-card reveal">
+      <div class="testimonial-card tilt-card reveal" style="--delay:.3s">
         <div class="quote-mark">"</div>
-        <p class="testimonial-text">Como médica, minha reputação é fundamental. Encontrei meu nome vinculado a informações desatualizadas em fontes públicas. O sistema foi preciso, discreto e me devolveu a tranquilidade.</p>
+        <p class="testimonial-text">
+          Minha reputação é essencial. O sistema foi preciso, discreto e me devolveu tranquilidade.
+        </p>
         <div class="testimonial-author">
-          <div class="author-avatar" style="background:rgba(102,226,167,.2);color:var(--green)">A</div>
+          <div class="author-avatar" style="background:rgba(102,226,167,.2);color:#34d399">A</div>
           <div>
-            <div class="author-name">Dra. Ana P.</div>
-            <div class="author-role">Médica, Belo Horizonte</div>
+            <div class="author-name">Dra. Ana</div>
+            <div class="author-role">Médica</div>
             <div class="stars">★★★★★</div>
           </div>
         </div>
       </div>
     </div>
-
-    <div style="margin-top:48px;text-align:center" class="reveal">
-      <div class="authority-inner">
-        <div class="authority-badge tilt-card"><span class="authority-badge-icon">🔒</span>Plataforma compatível com LGPD</div>
-        <div class="authority-badge tilt-card"><span class="authority-badge-icon">⚖</span>Orientações baseadas em lei</div>
-        <div class="authority-badge tilt-card"><span class="authority-badge-icon">🏆</span>+800 análises realizadas</div>
-        <div class="authority-badge tilt-card"><span class="authority-badge-icon">⭐</span>4.9 de avaliação média</div>
-      </div>
-    </div>
   </div>
 </section>
 
-<!-- OBJECTIONS -->
-<section id="objections">
-  <div class="container">
-    <div style="text-align:center" class="reveal">
-      <div class="section-tag">Suas Dúvidas</div>
-      <h2 class="section-headline">
-        Respostas diretas<br>
-        <span class="gradient-text">para quem pensa antes de agir</span>
-      </h2>
-    </div>
-
-    <div class="objections-grid">
-      <div class="objection-card tilt-card reveal">
-        <div class="objection-q">
-          <span class="objection-icon">🤔</span>
-          <h4>Isso realmente funciona? Não é promessa vazia?</h4>
-        </div>
-        <p>Nossas orientações são baseadas na LGPD, no Marco Civil da Internet e no direito à privacidade. São mecanismos jurídicos reais, aplicados de forma responsável. Mais de 800 pessoas já passaram pelo processo e avaliaram positivamente.</p>
-      </div>
-      <div class="objection-card tilt-card reveal">
-        <div class="objection-q">
-          <span class="objection-icon">🔒</span>
-          <h4>Minhas informações estão seguras com vocês?</h4>
-        </div>
-        <p>Utilizamos criptografia de ponta a ponta e seguimos rigorosamente a LGPD. Seus dados nunca são compartilhados, vendidos ou utilizados para qualquer finalidade além da análise solicitada. Somos a última pessoa com interesse em expor sua privacidade.</p>
-      </div>
-      <div class="objection-card tilt-card reveal">
-        <div class="objection-q">
-          <span class="objection-icon">⚖</span>
-          <h4>É legal solicitar a remoção de informações públicas?</h4>
-        </div>
-        <p>Em muitos casos, sim. O direito à privacidade e à proteção de dados é garantido pela Constituição Federal, LGPD (Lei 13.709/2018) e entendimentos do STJ. Informações desatualizadas ou sem relevância pública podem ser objeto de solicitação de remoção ou desindexação.</p>
-      </div>
-      <div class="objection-card tilt-card reveal">
-        <div class="objection-q">
-          <span class="objection-icon">⏱</span>
-          <h4>Quanto tempo leva para ver resultados?</h4>
-        </div>
-        <p>A análise orientativa é entregue em até 96 horas. Ações de desindexação têm prazos variáveis conforme a plataforma — de 15 a 45 dias em média. Monitoramos cada etapa e mantemos você informado.</p>
-      </div>
-      <div class="objection-card tilt-card reveal">
-        <div class="objection-q">
-          <span class="objection-icon">💰</span>
-          <h4>O investimento vale a pena?</h4>
-        </div>
-        <p>Uma oportunidade profissional perdida, uma parceria frustrada ou um dano de imagem podem custar muito mais. Pense como um investimento em reputação — um ativo intangível com valor real e mensurável.</p>
-      </div>
-      <div class="objection-card tilt-card reveal">
-        <div class="objection-q">
-          <span class="objection-icon">🔄</span>
-          <h4>E se o nome aparecer novamente no futuro?</h4>
-        </div>
-        <p>O monitoramento contínuo detecta novas aparições imediatamente. Você recebe alertas e nossa equipe já inicia o protocolo de análise — sem que você precise acompanhar manualmente.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- CTA FINAL -->
-<section id="cta">
+<!-- ══════════════════════════════════════════════ CTA FINAL ══ -->
+<section id="cta" class="section-cta">
   <div class="container">
     <div class="cta-box reveal">
       <div class="cta-glow"></div>
@@ -525,156 +527,122 @@
         <span class="gradient-text">Assuma o controle.</span>
       </h2>
       <p class="cta-sub">
-        Faça uma análise orientativa agora ou fale com um especialista para entender o que pode ser feito no seu caso.
+        Faça uma análise agora e veja onde seu nome pode estar aparecendo.
       </p>
-
-      <div class="cta-features">
-        <span class="cta-feature">Análise gratuita</span>
-        <span class="cta-feature">Resposta rápida</span>
-        <span class="cta-feature">Sem compromisso</span>
-        <span class="cta-feature">100% confidencial</span>
-      </div>
-
       <div class="cta-actions">
-        <a href="scanner.html" class="btn btn-primary btn-large magnetic">
+        <a href="" class="btn btn-primary btn-large">
           🔍 Fazer análise agora
         </a>
-        <a href="https://wa.me/message/LYPQQLRHK6ANI1" target="_blank" class="btn btn-outline btn-large magnetic">
+        <a href="https://wa.me/message/LYPQQLRHK6ANI1" target="_blank" rel="noopener" class="btn btn-outline btn-large">
           💬 Falar com especialista
         </a>
       </div>
-
       <p class="cta-disclaimer">
-        Nenhum dado é compartilhado externamente. Análise segura e sem spam.
+        Análise segura &nbsp;·&nbsp; Sem spam &nbsp;·&nbsp; Total confidencialidade
       </p>
     </div>
   </div>
 </section>
 
-<!-- FAQ -->
-<section id="faq">
+<!-- ══════════════════════════════════════════════ FAQ ══ -->
+<section id="faq" class="section-faq">
   <div class="container">
-    <div style="text-align:center" class="reveal">
-      <div class="section-tag">FAQ</div>
+    <div class="text-center reveal">
+      <div class="section-tag" style="justify-content:center">FAQ</div>
       <h2 class="section-headline">
         Perguntas<br>
         <span class="gradient-text">frequentes</span>
       </h2>
     </div>
-
     <div class="faq-list reveal">
       <div class="faq-item">
-        <div class="faq-q" onclick="toggleFaq(this)">
-          O serviço funciona para empresas (PJ) também?
+        <div class="faq-q" role="button" tabindex="0">
+          Funciona mesmo?
           <span class="faq-arrow">▾</span>
         </div>
-        <div class="faq-a">Sim. Oferecemos análise tanto para pessoas físicas quanto jurídicas. Para empresas, verificamos o nome da marca, CNPJ, razão social e nomes dos sócios, entregando um painel consolidado de possíveis exposições corporativas.</div>
+        <div class="faq-a">
+          Sim. Baseado na LGPD e práticas reais de desindexação. Já orientamos mais de 800 pessoas a identificar e tratar suas exposições digitais com embasamento legal sólido.
+        </div>
       </div>
       <div class="faq-item">
-        <div class="faq-q" onclick="toggleFaq(this)">
-          Vocês conseguem solicitar remoção de conteúdo do Jusbrasil?
+        <div class="faq-q" role="button" tabindex="0">
+          Meus dados ficam seguros?
           <span class="faq-arrow">▾</span>
         </div>
-        <div class="faq-a">Em muitos casos, é possível encaminhar solicitações formais baseadas na LGPD e em decisões judiciais. Para processos arquivados, frequentemente obtemos a desindexação ou supressão de dados sensíveis. Cada caso é avaliado individualmente.</div>
+        <div class="faq-a">
+          Utilizamos criptografia de ponta a ponta e não compartilhamos informações com terceiros. Sua privacidade é nossa prioridade máxima — tratamos seus dados como tratamos os nossos.
+        </div>
       </div>
       <div class="faq-item">
-        <div class="faq-q" onclick="toggleFaq(this)">
-          Preciso de advogado para usar o serviço?
+        <div class="faq-q" role="button" tabindex="0">
+          Preciso de advogado?
           <span class="faq-arrow">▾</span>
         </div>
-        <div class="faq-a">Não. Nossa plataforma e equipe orientam todo o processo. Quando a situação exige ação judicial específica, indicamos profissionais parceiros. A maioria dos casos é tratada de forma extrajudicial.</div>
+        <div class="faq-a">
+          Não necessariamente. A maioria dos casos é extrajudicial e pode ser resolvida diretamente com as plataformas. Quando necessário, orientamos sobre os próximos passos com especialistas.
+        </div>
       </div>
       <div class="faq-item">
-        <div class="faq-q" onclick="toggleFaq(this)">
-          O serviço tem garantia?
+        <div class="faq-q" role="button" tabindex="0">
+          Quanto tempo leva?
           <span class="faq-arrow">▾</span>
         </div>
-        <div class="faq-a">Garantimos a execução completa de todas as orientações recomendadas e o monitoramento contínuo. Em casos onde a remoção técnica não é viável (ex: processos em andamento com relevância pública), entregamos supressão máxima possível e estratégia de gestão de imagem.</div>
+        <div class="faq-a">
+          O relatório inicial é entregue em até 96 horas. As ações de desindexação podem variar de dias a semanas, dependendo das plataformas envolvidas.
+        </div>
       </div>
       <div class="faq-item">
-        <div class="faq-q" onclick="toggleFaq(this)">
-          Como é a cobrança? Existe mensalidade?
+        <div class="faq-q" role="button" tabindex="0">
+          E se meu nome for comum?
           <span class="faq-arrow">▾</span>
         </div>
-        <div class="faq-a">A análise orientativa inicial é gratuita. Para execução de ações e monitoramento contínuo, apresentamos um orçamento claro e personalizado após a análise — por escopo ou plano mensal, sem surpresas.</div>
-      </div>
-      <div class="faq-item">
-        <div class="faq-q" onclick="toggleFaq(this)">
-          E se meu nome for muito comum?
-          <span class="faq-arrow">▾</span>
+        <div class="faq-a">
+          Utilizamos múltiplos identificadores além do nome — CPF, cidade, profissão — para garantir que os resultados sejam específicos para você e não para homônimos.
         </div>
-        <div class="faq-a">Nosso sistema usa múltiplos identificadores além do nome para filtrar resultados com precisão. Você recebe apenas exposições efetivamente relacionadas a você, sem falsos positivos.</div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- FOOTER -->
-<footer>
+<!-- ══════════════════════════════════════════════ FOOTER ══ -->
+<footer class="site-footer">
   <div class="container">
     <div class="footer-grid">
-
-      <!-- BRAND -->
       <div class="footer-brand">
-        <a href="#" class="logo footer-logo">
-          <img src="assets/logo.png" class="logo-img" alt="Mais Justiça">
+        <a href="assets/logo.png" class="logo">
+          <div class="logo-icon">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <rect x="1" y="1" width="7.5" height="7.5" rx="2" fill="rgba(167,139,250,1)"/>
+              <rect x="11.5" y="1" width="7.5" height="7.5" rx="2" fill="rgba(167,139,250,0.55)"/>
+              <rect x="1" y="11.5" width="7.5" height="7.5" rx="2" fill="rgba(167,139,250,0.35)"/>
+              <rect x="11.5" y="11.5" width="7.5" height="7.5" rx="2" fill="rgba(167,139,250,0.18)"/>
+            </svg>
+          </div>
           <span>Mais Justiça</span>
         </a>
-
-        <p>
-          Plataforma de análise e controle de exposição digital.
-          Orientamos. Protegemos. Monitoramos.
-        </p>
-
-        <div class="footer-socials">
-          <a href="#" class="social-btn">in</a>
-          <a href="#" class="social-btn">ig</a>
-          <a href="#" class="social-btn">tw</a>
-        </div>
+        <p>Plataforma de controle de exposição digital. Sua privacidade, protegida.</p>
       </div>
-
-      <!-- COL 1 -->
       <div class="footer-col">
         <h5>Plataforma</h5>
         <a href="#how">Como funciona</a>
-        <a href="scanner.html">Análise gratuita</a>
-        <a href="#">Planos</a>
-        <a href="#">Para empresas</a>
+        <a href="scanner.html">Análise</a>
       </div>
-
-      <!-- COL 2 -->
-      <div class="footer-col">
-        <h5>Recursos</h5>
-        <a href="#">Blog de Privacidade</a>
-        <a href="#">Guia da LGPD</a>
-        <a href="#">Direito ao Esquecimento</a>
-        <a href="#">Cases</a>
-      </div>
-
-      <!-- COL 3 -->
       <div class="footer-col">
         <h5>Empresa</h5>
         <a href="#">Sobre</a>
         <a href="#">Contato</a>
-        <a href="#">Política de Privacidade</a>
-        <a href="#">Termos de Uso</a>
       </div>
-
-    </div>
-
-    <!-- BOTTOM -->
-    <div class="footer-bottom">
-      <span>© 2025 Mais Justiça. Todos os direitos reservados.</span>
-
-      <div class="footer-legal">
+      <div class="footer-col">
+        <h5>Legal</h5>
         <a href="#">Privacidade</a>
         <a href="#">Termos</a>
-        <a href="#">LGPD</a>
       </div>
-
+    </div>
+    <div class="footer-bottom">
+      <span>© 2025 Mais Justiça. Todos os direitos reservados.</span>
       <span class="footer-status">
         <span class="status-dot"></span>
-        <span class="mono">Sistema Operacional</span>
+        Sistema operacional
       </span>
     </div>
   </div>
