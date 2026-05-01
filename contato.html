@@ -315,20 +315,13 @@
         <h2>Envie sua mensagem</h2>
         <p>Preencha os dados abaixo para iniciarmos o atendimento.</p>
 
-      <form class="contact-form" action="https://formsubmit.co/maisjustica.suporte@gmail.com" method="POST">
-  
-        <input type="hidden" name="_subject" value="Novo contato pelo site Mais Justiça">
-        <input type="hidden" name="_captcha" value="false">
-        <input type="hidden" name="_template" value="table">
-        <input type="hidden" name="_next" value="https://mais-justica.vercel.app/obrigado.html">
+        <form class="contact-form" action="https://formsubmit.co/maisjustica.suporte@gmail.com" method="POST">
+          <input type="hidden" name="_subject" value="Novo contato pelo site Mais Justiça">
+          <input type="hidden" name="_captcha" value="false">
+          <input type="hidden" name="_template" value="table">
+          <input type="hidden" name="_next" value="https://mais-justica.vercel.app/obrigado.html">
+          <input type="hidden" name="_autoresponse" value="Recebemos sua mensagem! Em breve entraremos em contato.">
 
-        <!-- evita spam -->
-        <input type="text" name="_honey" style="display:none">
-
-        <!-- garante que vai reconhecer como form -->
-        <input type="hidden" name="_autoresponse" value="Recebemos sua mensagem! Em breve entraremos em contato.">
-
-      </form>
 
           <div class="form-group">
             <label for="nome">Nome completo</label>
