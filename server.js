@@ -1,3 +1,5 @@
+require("dotenv").config();
+
 const express = require("express");
 const cors = require("cors");
 
@@ -1537,3 +1539,37 @@ function cruzarResultados(resultados) {
     };
   });
 }
+
+const nodemailer = require("nodemailer");
+
+app.post("/send-email", async (req, res) => {
+  const { nome, email, whatsapp, mensagem } = req.body;
+
+  try {
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS
+      }
+    });
+
+    await transporter.sendMail({
+      from: `"Site Mais Justiça" <${process.env.EMAIL_USER}>`,
+      to: "seuemail@gmail.com",
+      subject: "Novo contato do site",
+      html: `
+        <h2>Novo lead</h2>
+        <p><b>Nome:</b> ${nome}</p>
+        <p><b>Email:</b> ${email}</p>
+        <p><b>WhatsApp:</b> ${whatsapp}</p>
+        <p><b>Mensagem:</b> ${mensagem}</p>
+      `
+    });
+
+    res.json({ success: true });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Erro ao enviar email" });
+  }
+});

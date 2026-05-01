@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mensagem enviada — Mais Justiça</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Inter', sans-serif;
+}
+
+body {
+  background: radial-gradient(circle at 30% 20%, #1a0f2e, #05050d 70%);
+  color: white;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* Glow background */
+.orb {
+  position: absolute;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(143,91,255,0.25), transparent);
+  filter: blur(120px);
+  animation: float 10s infinite alternate ease-in-out;
+}
+
+.orb:nth-child(1) {
+  top: -100px;
+  left: -100px;
+}
+
+.orb:nth-child(2) {
+  bottom: -120px;
+  right: -100px;
+  animation-delay: 2s;
+}
+
+@keyframes float {
+  to {
+    transform: translateY(40px) translateX(30px);
+  }
+}
+
+/* Card */
+.card {
+  position: relative;
+  background: rgba(20, 20, 40, 0.6);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(143,91,255,0.2);
+  border-radius: 20px;
+  padding: 50px 40px;
+  text-align: center;
+  max-width: 500px;
+  width: 90%;
+  box-shadow: 0 0 60px rgba(143,91,255,0.15);
+  animation: fadeUp 1s ease forwards;
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Icon */
+.icon {
+  width: 70px;
+  height: 70px;
+  margin: 0 auto 20px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #8f5bff, #4a7dff);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 25px rgba(143,91,255,0.6);
+  animation: pop 0.6s ease;
+}
+
+@keyframes pop {
+  0% { transform: scale(0.5); }
+  100% { transform: scale(1); }
+}
+
+/* Text */
+h1 {
+  font-size: 28px;
+  margin-bottom: 10px;
+}
+
+p {
+  color: rgba(255,255,255,0.7);
+  font-size: 15px;
+  margin-bottom: 25px;
+}
+
+/* Button */
+.btn {
+  display: inline-block;
+  padding: 14px 26px;
+  border-radius: 12px;
+  text-decoration: none;
+  font-weight: 500;
+  background: linear-gradient(135deg, #8f5bff, #4a7dff);
+  color: white;
+  transition: 0.3s;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(143,91,255,0.4);
+}
+</style>
+</head>
+
+<body>
+
+<div class="orb"></div>
+<div class="orb"></div>
+
+<div class="card">
+  <div class="icon">
+    ✓
+  </div>
+
+  <h1>Mensagem enviada com sucesso</h1>
+  <p>
+    Recebemos seu contato. Nossa equipe irá analisar e responder o mais rápido possível.
+  </p>
+
+  <a href="index.html" class="btn">
+    Voltar para o site
+  </a>
+</div>
+
+</body>
+</html>

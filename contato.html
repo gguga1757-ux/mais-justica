@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contato — Mais Justiça</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Sora:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="style.css">
+
+<style>
+.contact-hero {
+  min-height: 100vh;
+  padding: 150px 0 100px;
+  background:
+    radial-gradient(ellipse 70% 55% at 70% 30%, rgba(139,92,246,.22), transparent 65%),
+    radial-gradient(ellipse 50% 45% at 18% 65%, rgba(59,130,246,.10), transparent 65%),
+    linear-gradient(180deg, #04040e 0%, #050510 100%);
+}
+
+.contact-grid {
+  display: grid;
+  grid-template-columns: .95fr 1.05fr;
+  gap: 70px;
+  align-items: center;
+}
+
+.contact-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(139,92,246,.35);
+  background: rgba(139,92,246,.10);
+  color: #c4b5fd;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  margin-bottom: 24px;
+}
+
+.contact-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 999px;
+  background: var(--green);
+  box-shadow: 0 0 14px rgba(16,217,160,.8);
+}
+
+.contact-title {
+  font-family: var(--font-heading);
+  font-size: clamp(42px, 5vw, 72px);
+  font-weight: 800;
+  line-height: .98;
+  letter-spacing: -.06em;
+  margin-bottom: 26px;
+}
+
+.contact-lead {
+  color: var(--text-soft);
+  font-size: 18px;
+  line-height: 1.8;
+  max-width: 540px;
+}
+
+.contact-options {
+  display: grid;
+  gap: 16px;
+  margin-top: 38px;
+}
+
+.contact-option {
+  display: flex;
+  gap: 16px;
+  padding: 20px;
+  border-radius: 20px;
+  background: rgba(255,255,255,.035);
+  border: 1px solid rgba(255,255,255,.07);
+}
+
+.contact-option-icon {
+  width: 46px;
+  height: 46px;
+  border-radius: 14px;
+  background: rgba(139,92,246,.14);
+  border: 1px solid rgba(139,92,246,.18);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.contact-option h3 {
+  font-family: var(--font-heading);
+  font-size: 16px;
+  margin-bottom: 4px;
+}
+
+.contact-option p,
+.contact-option a {
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.6;
+  text-decoration: none;
+}
+
+.contact-card {
+  position: relative;
+  border-radius: 30px;
+  padding: 34px;
+  background:
+    radial-gradient(ellipse at 50% 0%, rgba(139,92,246,.16), transparent 65%),
+    rgba(16,17,31,.82);
+  border: 1px solid rgba(139,92,246,.24);
+  box-shadow:
+    0 40px 110px rgba(0,0,0,.42),
+    0 0 80px rgba(139,92,246,.10);
+  overflow: hidden;
+}
+
+.contact-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 14%;
+  right: 14%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--purple), var(--blue), transparent);
+}
+
+.contact-card h2 {
+  font-family: var(--font-heading);
+  font-size: 28px;
+  letter-spacing: -.04em;
+  margin-bottom: 10px;
+}
+
+.contact-card p {
+  color: var(--muted);
+  margin-bottom: 28px;
+}
+
+.contact-form {
+  display: grid;
+  gap: 14px;
+}
+
+.form-group {
+  display: grid;
+  gap: 8px;
+}
+
+.form-group label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-soft);
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+  width: 100%;
+  padding: 15px 16px;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,.08);
+  background: rgba(4,4,14,.58);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 14px;
+  outline: none;
+  transition: .25s ease;
+}
+
+.form-group textarea {
+  min-height: 130px;
+  resize: vertical;
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+  border-color: rgba(139,92,246,.55);
+  box-shadow: 0 0 0 4px rgba(139,92,246,.12);
+}
+
+.contact-submit {
+  margin-top: 8px;
+  width: 100%;
+}
+
+.contact-note {
+  margin-top: 18px;
+  font-size: 12px;
+  color: var(--muted);
+  text-align: center;
+}
+
+.contact-fast {
+  margin-top: 18px;
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 960px) {
+  .contact-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .contact-hero {
+    padding: 130px 0 80px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div id="preloader">
+  <div class="preloader-inner">
+    <div class="preloader-logo">
+      <img src="assets/logo.png" class="pl-logo-img" alt="Mais Justiça">
+      <span>Mais Justiça</span>
+    </div>
+    <div class="preloader-bar">
+      <div class="preloader-fill"></div>
+    </div>
+    <div class="preloader-label mono">Inicializando sistema seguro...</div>
+  </div>
+</div>
+
+<div id="cursor"></div>
+<div id="cursor-follower"></div>
+
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+<div class="orb orb-3"></div>
+<div class="orb orb-4"></div>
+<div class="grid-overlay"></div>
+
+<header id="header">
+  <div class="container header-inner">
+    <a href="index.html" class="logo">
+      <img src="assets/logo.png" class="logo-img" alt="Mais Justiça">
+      <span>Mais Justiça</span>
+    </a>
+
+    <nav>
+      <a href="index.html">Início</a>
+      <a href="sobre.html">Sobre</a>
+      <a href="index.html#how">Como funciona</a>
+      <a href="index.html#faq">FAQ</a>
+    </nav>
+
+    <a href="index.html#cta" class="btn btn-primary header-btn">
+      Analisar meu nome →
+    </a>
+  </div>
+</header>
+
+<section class="contact-hero">
+  <div class="container">
+    <div class="contact-grid">
+
+      <div class="reveal">
+        <div class="contact-badge">
+          <span class="contact-dot"></span>
+          Atendimento confidencial
+        </div>
+
+        <h1 class="contact-title">
+          Fale com a<br>
+          <span class="gradient-text">Mais Justiça</span>
+        </h1>
+
+        <p class="contact-lead">
+          Tire dúvidas, solicite uma análise ou converse com um especialista sobre sua exposição digital. Todo contato é tratado com discrição, segurança e responsabilidade.
+        </p>
+
+        <div class="contact-options">
+          <div class="contact-option">
+            <div class="contact-option-icon">💬</div>
+            <div>
+              <h3>WhatsApp direto</h3>
+              <a href="https://wa.me/message/LYPQQLRHK6ANI1" target="_blank" rel="noopener">
+                Fale com um especialista agora
+              </a>
+            </div>
+          </div>
+
+          <div class="contact-option">
+            <div class="contact-option-icon">🔒</div>
+            <div>
+              <h3>Atendimento seguro</h3>
+              <p>Seus dados não são compartilhados com terceiros.</p>
+            </div>
+          </div>
+
+          <div class="contact-option">
+            <div class="contact-option-icon">⚡</div>
+            <div>
+              <h3>Resposta rápida</h3>
+              <p>Retorno inicial em horário comercial, conforme demanda.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="contact-card reveal">
+        <h2>Envie sua mensagem</h2>
+        <p>Preencha os dados abaixo para iniciarmos o atendimento.</p>
+
+        <form class="contact-form" action="https://formsubmit.co/maisjustica.suporte@gmail.com" method="POST">
+          <input type="hidden" name="_subject" value="Novo contato pelo site Mais Justiça">
+          <input type="hidden" name="_captcha" value="false">
+          <input type="hidden" name="_template" value="table">
+          <input type="hidden" name="_next" value="https://mais-justica.vercel.app/obrigado.html">
+
+          <div class="form-group">
+            <label for="nome">Nome completo</label>
+            <input id="nome" name="nome" type="text" placeholder="Digite seu nome" required>
+          </div>
+
+          <div class="form-group">
+            <label for="email">E-mail</label>
+            <input id="email" name="email" type="email" placeholder="seuemail@exemplo.com" required>
+          </div>
+
+          <div class="form-group">
+            <label for="whatsapp">WhatsApp</label>
+            <input id="whatsapp" name="whatsapp" type="text" placeholder="(00) 00000-0000">
+          </div>
+
+          <div class="form-group">
+            <label for="assunto">Assunto</label>
+            <select id="assunto" name="assunto" required>
+              <option value="">Selecione uma opção</option>
+              <option value="Quero uma análise">Quero uma análise</option>
+              <option value="Tenho dúvida sobre remoção/desindexação">Tenho dúvida sobre remoção/desindexação</option>
+              <option value="Quero falar com um especialista">Quero falar com um especialista</option>
+              <option value="Outro assunto">Outro assunto</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="mensagem">Mensagem</label>
+            <textarea id="mensagem" name="mensagem" placeholder="Conte brevemente como podemos ajudar..." required></textarea>
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-large contact-submit">
+            Enviar mensagem →
+          </button>
+        </form>
+
+        <div class="contact-fast">
+          <a href="https://wa.me/message/LYPQQLRHK6ANI1" target="_blank" rel="noopener" class="btn btn-outline">
+            💬 WhatsApp
+          </a>
+          <a href="index.html#cta" class="btn btn-outline">
+            🔍 Fazer análise
+          </a>
+        </div>
+
+        <p class="contact-note">
+          Ao enviar, você concorda que seus dados sejam usados apenas para retorno de atendimento.
+        </p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+
+      <div class="footer-brand">
+        <a href="index.html" class="logo footer-logo">
+          <img src="assets/logo.png" class="logo-img" alt="Mais Justiça">
+          <span>Mais Justiça</span>
+        </a>
+        <p>
+          Plataforma de controle de exposição digital. Sua privacidade, protegida.
+        </p>
+      </div>
+
+      <div class="footer-col">
+        <h5>Plataforma</h5>
+        <a href="index.html#how">Como funciona</a>
+        <a href="sobre.html">Sobre</a>
+        <a href="index.html#cta">Análise</a>
+      </div>
+
+      <div class="footer-col">
+        <h5>Empresa</h5>
+        <a href="sobre.html">Sobre</a>
+        <a href="contato.html">Contato</a>
+      </div>
+
+      <div class="footer-col">
+        <h5>Legal</h5>
+        <a href="privacidade.html">Privacidade</a>
+        <a href="termos.html">Termos</a>
+      </div>
+
+    </div>
+
+    <div class="footer-bottom">
+      <span>© 2025 Mais Justiça. Todos os direitos reservados.</span>
+      <span class="footer-status">
+        <span class="status-dot"></span>
+        Sistema operacional
+      </span>
+    </div>
+  </div>
+</footer>
+
+<script src="script-home.js"></script>
+</body>
+</html>

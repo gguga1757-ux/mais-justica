@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Política de Privacidade — Mais Justiça</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Sora:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="style.css">
+
+<style>
+.privacy-hero {
+  min-height: 72vh;
+  padding: 155px 0 90px;
+  display: flex;
+  align-items: center;
+  background:
+    radial-gradient(ellipse 70% 55% at 70% 30%, rgba(139,92,246,.22), transparent 65%),
+    radial-gradient(ellipse 50% 45% at 18% 65%, rgba(59,130,246,.10), transparent 65%),
+    linear-gradient(180deg, #04040e 0%, #050510 100%);
+  overflow: hidden;
+}
+
+.privacy-wrap {
+  max-width: 940px;
+}
+
+.privacy-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(139,92,246,.35);
+  background: rgba(139,92,246,.10);
+  color: #c4b5fd;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  margin-bottom: 24px;
+}
+
+.privacy-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 999px;
+  background: var(--green);
+  box-shadow: 0 0 14px rgba(16,217,160,.8);
+}
+
+.privacy-title {
+  font-family: var(--font-heading);
+  font-size: clamp(42px, 5vw, 74px);
+  font-weight: 800;
+  line-height: .98;
+  letter-spacing: -.06em;
+  margin-bottom: 26px;
+}
+
+.privacy-lead {
+  max-width: 720px;
+  color: var(--text-soft);
+  font-size: 18px;
+  line-height: 1.8;
+}
+
+.privacy-content-section {
+  padding: 90px 0 120px;
+}
+
+.privacy-layout {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 46px;
+  align-items: start;
+}
+
+.privacy-sidebar {
+  position: sticky;
+  top: 110px;
+  background: rgba(16,17,31,.72);
+  border: 1px solid rgba(139,92,246,.18);
+  border-radius: 22px;
+  padding: 22px;
+}
+
+.privacy-sidebar h3 {
+  font-family: var(--font-heading);
+  font-size: 15px;
+  margin-bottom: 14px;
+}
+
+.privacy-sidebar a {
+  display: block;
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 13px;
+  padding: 9px 0;
+  border-bottom: 1px solid rgba(255,255,255,.045);
+}
+
+.privacy-sidebar a:hover {
+  color: var(--text);
+}
+
+.privacy-card {
+  background:
+    radial-gradient(ellipse at 50% 0%, rgba(139,92,246,.10), transparent 58%),
+    rgba(16,17,31,.82);
+  border: 1px solid rgba(139,92,246,.18);
+  border-radius: 28px;
+  padding: 42px;
+  box-shadow: 0 35px 100px rgba(0,0,0,.28);
+}
+
+.privacy-block {
+  padding: 30px 0;
+  border-bottom: 1px solid rgba(255,255,255,.07);
+}
+
+.privacy-block:first-child {
+  padding-top: 0;
+}
+
+.privacy-block:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.privacy-block h2 {
+  font-family: var(--font-heading);
+  font-size: 26px;
+  letter-spacing: -.04em;
+  margin-bottom: 14px;
+}
+
+.privacy-block p,
+.privacy-block li {
+  color: var(--muted);
+  font-size: 15px;
+  line-height: 1.85;
+}
+
+.privacy-block ul {
+  margin-top: 14px;
+  padding-left: 20px;
+}
+
+.privacy-note {
+  margin-top: 24px;
+  padding: 20px;
+  border-radius: 18px;
+  background: rgba(139,92,246,.08);
+  border: 1px solid rgba(139,92,246,.18);
+  color: var(--text-soft);
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.privacy-last-update {
+  margin-top: 28px;
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 12px;
+}
+
+@media (max-width: 960px) {
+  .privacy-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .privacy-sidebar {
+    position: relative;
+    top: auto;
+  }
+
+  .privacy-hero {
+    padding: 135px 0 70px;
+  }
+
+  .privacy-card {
+    padding: 28px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div id="preloader">
+  <div class="preloader-inner">
+    <div class="preloader-logo">
+      <img src="assets/logo.png" class="pl-logo-img" alt="Mais Justiça">
+      <span>Mais Justiça</span>
+    </div>
+    <div class="preloader-bar">
+      <div class="preloader-fill"></div>
+    </div>
+    <div class="preloader-label mono">Inicializando sistema seguro...</div>
+  </div>
+</div>
+
+<div id="cursor"></div>
+<div id="cursor-follower"></div>
+
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+<div class="orb orb-3"></div>
+<div class="orb orb-4"></div>
+<div class="grid-overlay"></div>
+
+<header id="header">
+  <div class="container header-inner">
+    <a href="index.html" class="logo">
+      <img src="assets/logo.png" class="logo-img" alt="Mais Justiça">
+      <span>Mais Justiça</span>
+    </a>
+
+    <nav>
+      <a href="index.html">Início</a>
+      <a href="sobre.html">Sobre</a>
+      <a href="contato.html">Contato</a>
+      <a href="index.html#faq">FAQ</a>
+    </nav>
+
+    <a href="index.html#cta" class="btn btn-primary header-btn">
+      Analisar meu nome →
+    </a>
+  </div>
+</header>
+
+<section class="privacy-hero">
+  <div class="container">
+    <div class="privacy-wrap reveal">
+      <div class="privacy-badge">
+        <span class="privacy-dot"></span>
+        Política de Privacidade
+      </div>
+
+      <h1 class="privacy-title">
+        Sua privacidade<br>
+        <span class="gradient-text">é parte central do nosso serviço.</span>
+      </h1>
+
+      <p class="privacy-lead">
+        Esta política explica de forma clara como a Mais Justiça coleta, utiliza, protege e trata informações fornecidas por usuários em nossos canais digitais.
+      </p>
+
+      <p class="privacy-last-update">
+        Última atualização: maio de 2026
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="privacy-content-section">
+  <div class="container">
+    <div class="privacy-layout">
+
+      <aside class="privacy-sidebar reveal">
+        <h3>Conteúdo</h3>
+        <a href="#dados">Dados coletados</a>
+        <a href="#uso">Como usamos</a>
+        <a href="#base-legal">Base legal</a>
+        <a href="#compartilhamento">Compartilhamento</a>
+        <a href="#seguranca">Segurança</a>
+        <a href="#direitos">Direitos do titular</a>
+        <a href="#contato-privacidade">Contato</a>
+      </aside>
+
+      <div class="privacy-card reveal">
+
+        <div class="privacy-block" id="dados">
+          <h2>1. Dados que podemos coletar</h2>
+          <p>
+            A Mais Justiça pode coletar informações fornecidas voluntariamente pelo usuário durante o uso do site, solicitação de análise, preenchimento de formulários ou contato com nossa equipe.
+          </p>
+          <ul>
+            <li>Nome completo;</li>
+            <li>E-mail e telefone/WhatsApp;</li>
+            <li>Informações necessárias para análise de exposição digital;</li>
+            <li>Mensagens enviadas por formulários ou canais de atendimento;</li>
+            <li>Dados técnicos básicos de navegação, quando aplicável.</li>
+          </ul>
+        </div>
+
+        <div class="privacy-block" id="uso">
+          <h2>2. Como utilizamos as informações</h2>
+          <p>
+            As informações coletadas são utilizadas exclusivamente para atendimento, análise de exposição digital, elaboração de orientação estratégica e comunicação com o usuário.
+          </p>
+          <ul>
+            <li>Responder solicitações enviadas pelo site;</li>
+            <li>Realizar análise inicial de exposição digital;</li>
+            <li>Organizar informações públicas relacionadas ao caso apresentado;</li>
+            <li>Entrar em contato para continuidade do atendimento;</li>
+            <li>Cumprir obrigações legais e regulatórias, quando necessário.</li>
+          </ul>
+        </div>
+
+        <div class="privacy-block" id="base-legal">
+          <h2>3. Base legal e LGPD</h2>
+          <p>
+            O tratamento de dados é realizado com base na Lei Geral de Proteção de Dados Pessoais, Lei nº 13.709/2018, considerando hipóteses como consentimento do titular, execução de procedimentos solicitados pelo usuário, legítimo interesse e cumprimento de obrigações legais quando aplicável.
+          </p>
+
+          <div class="privacy-note">
+            Nosso compromisso é tratar somente os dados necessários para a finalidade informada, respeitando princípios de necessidade, finalidade, transparência, segurança e prevenção.
+          </div>
+        </div>
+
+        <div class="privacy-block" id="compartilhamento">
+          <h2>4. Compartilhamento de dados</h2>
+          <p>
+            A Mais Justiça não vende, aluga ou comercializa dados pessoais. Informações poderão ser compartilhadas apenas quando necessário para execução do serviço solicitado, cumprimento legal, proteção de direitos ou mediante autorização do usuário.
+          </p>
+          <p>
+            Quando houver necessidade de envolver terceiros, buscamos limitar o compartilhamento ao mínimo necessário para a finalidade específica.
+          </p>
+        </div>
+
+        <div class="privacy-block" id="seguranca">
+          <h2>5. Segurança das informações</h2>
+          <p>
+            Adotamos medidas técnicas e organizacionais razoáveis para proteger as informações contra acessos não autorizados, uso indevido, alteração, divulgação ou destruição.
+          </p>
+          <ul>
+            <li>Uso restrito das informações para a finalidade informada;</li>
+            <li>Controle de acesso interno;</li>
+            <li>Boas práticas de proteção e confidencialidade;</li>
+            <li>Tratamento responsável de informações sensíveis ou reputacionais.</li>
+          </ul>
+        </div>
+
+        <div class="privacy-block" id="direitos">
+          <h2>6. Direitos do titular</h2>
+          <p>
+            Nos termos da LGPD, o titular dos dados pode solicitar informações sobre o tratamento realizado, correção, exclusão, portabilidade, revogação de consentimento ou limitação de uso, quando aplicável.
+          </p>
+          <p>
+            Solicitações relacionadas a direitos do titular podem ser feitas por meio dos canais de contato indicados nesta política.
+          </p>
+        </div>
+
+        <div class="privacy-block">
+          <h2>7. Retenção das informações</h2>
+          <p>
+            Os dados serão mantidos pelo tempo necessário para cumprir as finalidades informadas, prestar atendimento, executar análises solicitadas, cumprir obrigações legais ou resguardar direitos.
+          </p>
+        </div>
+
+        <div class="privacy-block">
+          <h2>8. Cookies e tecnologias semelhantes</h2>
+          <p>
+            O site pode utilizar cookies ou tecnologias similares para melhorar a experiência de navegação, compreender uso da página e garantir funcionamento adequado. O usuário pode gerenciar permissões diretamente no navegador.
+          </p>
+        </div>
+
+        <div class="privacy-block">
+          <h2>9. Limitações importantes</h2>
+          <p>
+            A Mais Justiça atua com análise, orientação e suporte estratégico relacionado à exposição digital. Não garantimos remoção total de conteúdos, pois decisões finais podem depender de plataformas, buscadores, órgãos públicos, terceiros ou critérios legais específicos.
+          </p>
+        </div>
+
+        <div class="privacy-block" id="contato-privacidade">
+          <h2>10. Contato sobre privacidade</h2>
+          <p>
+            Para dúvidas, solicitações ou exercício de direitos relacionados a dados pessoais, entre em contato pelos canais oficiais da Mais Justiça.
+          </p>
+
+          <div class="cta-actions" style="justify-content:flex-start;margin-top:24px">
+            <a href="contato.html" class="btn btn-primary">
+              Falar com a equipe →
+            </a>
+            <a href="index.html" class="btn btn-outline">
+              Voltar ao início
+            </a>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+
+      <div class="footer-brand">
+        <a href="index.html" class="logo footer-logo">
+          <img src="assets/logo.png" class="logo-img" alt="Mais Justiça">
+          <span>Mais Justiça</span>
+        </a>
+        <p>
+          Plataforma de controle de exposição digital. Sua privacidade, protegida.
+        </p>
+      </div>
+
+      <div class="footer-col">
+        <h5>Plataforma</h5>
+        <a href="index.html#how">Como funciona</a>
+        <a href="sobre.html">Sobre</a>
+        <a href="index.html#cta">Análise</a>
+      </div>
+
+      <div class="footer-col">
+        <h5>Empresa</h5>
+        <a href="sobre.html">Sobre</a>
+        <a href="contato.html">Contato</a>
+      </div>
+
+      <div class="footer-col">
+        <h5>Legal</h5>
+        <a href="privacidade.html">Privacidade</a>
+        <a href="termos.html">Termos</a>
+      </div>
+
+    </div>
+
+    <div class="footer-bottom">
+      <span>© 2025 Mais Justiça. Todos os direitos reservados.</span>
+      <span class="footer-status">
+        <span class="status-dot"></span>
+        Sistema operacional
+      </span>
+    </div>
+  </div>
+</footer>
+
+<script src="script-home.js"></script>
+</body>
+</html>

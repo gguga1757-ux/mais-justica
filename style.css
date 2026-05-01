@@ -1762,11 +1762,9 @@ body:has(button:hover) #cursor-follower {
 }
 
 .faq-item.open .faq-a {
-  max-height: 200px;
-  opacity: 1;
-  padding-bottom: 20px;
+  max-height: 300px;
+  padding-bottom: 22px;
 }
-
 /* ═══════════════════════════════════════════ FOOTER ══ */
 .site-footer {
   position: relative;
@@ -1975,4 +1973,26 @@ body:has(button:hover) #cursor-follower {
 /* esconder cursor padrão */
 html, body, * {
   cursor: none !important;
+}
+
+/* FIX FINAL FAQ — RESPOSTAS VISÍVEIS */
+.faq-a {
+  color: #aeb5cf !important;
+  font-size: 15px !important;
+  line-height: 1.8 !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  display: block !important;
+}
+
+.faq-item.open .faq-a {
+  max-height: 320px !important;
+  padding-bottom: 22px !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+.faq-a,
+.faq-a * {
+  color: #aeb5cf !important;
 }

@@ -717,3 +717,12 @@ function configurarCursorCustom() {
   cursor.dataset.cursorReady = "true";
   animateFollower();
 }
+
+// REMOVE PRELOADER
+window.addEventListener('load', () => {
+  const preloader = document.getElementById('preloader');
+
+  setTimeout(() => {
+    preloader.classList.add('hidden');
+  }, 800); // tempo opcional (animação)
+});
