@@ -316,48 +316,46 @@
         <p>Preencha os dados abaixo para iniciarmos o atendimento.</p>
 
         <form class="contact-form" action="https://formsubmit.co/maisjustica.suporte@gmail.com" method="POST">
-          <input type="hidden" name="_subject" value="Novo contato pelo site Mais Justiça">
-          <input type="hidden" name="_captcha" value="false">
-          <input type="hidden" name="_template" value="table">
-          <input type="hidden" name="_next" value="https://mais-justica.vercel.app/obrigado.html">
-          <input type="hidden" name="_autoresponse" value="Recebemos sua mensagem! Em breve entraremos em contato.">
+  <input type="hidden" name="_subject" value="Novo contato pelo site Mais Justiça">
+  <input type="hidden" name="_captcha" value="false">
+  <input type="hidden" name="_template" value="table">
+  <input type="hidden" name="_next" value="https://mais-justica.vercel.app/obrigado.html">
 
+  <div class="form-group">
+    <label for="nome">Nome completo</label>
+    <input id="nome" name="nome" type="text" placeholder="Digite seu nome" required>
+  </div>
 
-          <div class="form-group">
-            <label for="nome">Nome completo</label>
-            <input id="nome" name="nome" type="text" placeholder="Digite seu nome" required>
-          </div>
+  <div class="form-group">
+    <label for="email">E-mail</label>
+    <input id="email" name="email" type="email" placeholder="seuemail@exemplo.com" required>
+  </div>
 
-          <div class="form-group">
-            <label for="email">E-mail</label>
-            <input id="email" name="email" type="email" placeholder="seuemail@exemplo.com" required>
-          </div>
+  <div class="form-group">
+    <label for="whatsapp">WhatsApp</label>
+    <input id="whatsapp" name="whatsapp" type="text" placeholder="(00) 00000-0000">
+  </div>
 
-          <div class="form-group">
-            <label for="whatsapp">WhatsApp</label>
-            <input id="whatsapp" name="whatsapp" type="text" placeholder="(00) 00000-0000">
-          </div>
+  <div class="form-group">
+    <label for="assunto">Assunto</label>
+    <select id="assunto" name="assunto" required>
+      <option value="">Selecione uma opção</option>
+      <option value="Quero uma análise">Quero uma análise</option>
+      <option value="Tenho dúvida sobre remoção/desindexação">Tenho dúvida sobre remoção/desindexação</option>
+      <option value="Quero falar com um especialista">Quero falar com um especialista</option>
+      <option value="Outro assunto">Outro assunto</option>
+    </select>
+  </div>
 
-          <div class="form-group">
-            <label for="assunto">Assunto</label>
-            <select id="assunto" name="assunto" required>
-              <option value="">Selecione uma opção</option>
-              <option value="Quero uma análise">Quero uma análise</option>
-              <option value="Tenho dúvida sobre remoção/desindexação">Tenho dúvida sobre remoção/desindexação</option>
-              <option value="Quero falar com um especialista">Quero falar com um especialista</option>
-              <option value="Outro assunto">Outro assunto</option>
-            </select>
-          </div>
+  <div class="form-group">
+    <label for="mensagem">Mensagem</label>
+    <textarea id="mensagem" name="mensagem" placeholder="Conte brevemente como podemos ajudar..." required></textarea>
+  </div>
 
-          <div class="form-group">
-            <label for="mensagem">Mensagem</label>
-            <textarea id="mensagem" name="mensagem" placeholder="Conte brevemente como podemos ajudar..." required></textarea>
-          </div>
-
-          <button type="submit" class="btn btn-primary btn-large contact-submit">
-            Enviar mensagem →
-          </button>
-        </form>
+  <button type="submit" class="btn btn-primary btn-large contact-submit">
+    Enviar mensagem →
+  </button>
+</form>
 
         <div class="contact-fast">
           <a href="https://wa.me/message/LYPQQLRHK6ANI1" target="_blank" rel="noopener" class="btn btn-outline">
