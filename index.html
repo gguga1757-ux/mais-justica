@@ -10,6 +10,9 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Sora:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 
 <link rel="stylesheet" href="style.css">
+
+<!-- GSAP: refinamento premium do hero -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 </head>
 
 <body>
@@ -67,26 +70,26 @@
 </header>
 
 <!-- ══════════════════════════════════════════════ HERO ══ -->
-<section class="hero">
+<section class="hero" id="hero">
   <div class="hero-inner">
 
     <!-- LEFT -->
-    <div class="hero-left">
-      <span class="badge">
+    <div class="hero-left hero-copy">
+      <span class="badge hero-reveal hero-reveal-1">
         <span class="bpulse"></span>
         Sistema ativo &nbsp;·&nbsp; Monitoramento inteligente
       </span>
 
       <div class="hero-headline">
-        <h1 class="hl">Controle sua</h1>
-        <h1 class="hl"><span class="hl-grad">exposição digital</span></h1>
+        <h1 class="hl hero-reveal hero-reveal-2">Controle sua</h1>
+        <h1 class="hl hero-reveal hero-reveal-3"><span class="hl-grad">exposição digital</span></h1>
       </div>
 
-      <p class="sub">
+      <p class="sub hero-reveal hero-reveal-4">
         Identifique onde seu nome aparece publicamente na internet e entenda quais ações podem ser tomadas para proteger sua imagem e privacidade.
       </p>
 
-      <div class="ctas">
+      <div class="ctas hero-reveal hero-reveal-5">
         <a href="scanner.html" class="btn-p">
           <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
             <circle cx="7.5" cy="7.5" r="6.5" stroke="rgba(255,255,255,.50)" stroke-width="1"/>
@@ -102,7 +105,7 @@
         </a>
       </div>
 
-      <div class="hero-stats">
+      <div class="hero-stats hero-reveal hero-reveal-6">
         <div class="st"><span class="st-n">+800</span><span class="st-l">análises</span></div>
         <div class="st"><span class="st-n">97%</span><span class="st-l">satisfação</span></div>
         <div class="st"><span class="st-n">96h</span><span class="st-l">resultado médio</span></div>
@@ -110,18 +113,19 @@
     </div>
 
     <!-- RIGHT SCENE -->
-    <div class="scene">
+    <div class="scene hero-scene">
       <div class="ga ga-pm"></div>
       <div class="ga ga-ba"></div>
       <div class="ga ga-pl"></div>
+      <div class="hero-cursor-glow" aria-hidden="true"></div>
       <div class="db-shadow"></div>
       <div class="db-contact"></div>
 
       <!-- 3D wrapper -->
-      <div class="db3d">
+      <div class="db3d hero-reveal hero-reveal-7" id="heroDashboard">
 
         <!-- Floating cards -->
-        <div class="fc fc-r">
+        <div class="fc fc-r hero-float-card">
           <div class="fi fi-g">
             <svg viewBox="0 0 15 15" fill="none">
               <path d="M7.5 1.5L13 4v4c0 3-2.4 5.5-5.5 6.5C4.4 13.5 2 11 2 8V4l5.5-2.5z" stroke="#10d9a0" stroke-width="1.3"/>
@@ -131,7 +135,7 @@
           <div class="ft"><span class="fl">LGPD ativa</span><span class="fv fvg">Protegido</span></div>
         </div>
 
-        <div class="fc fc-l">
+        <div class="fc fc-l hero-float-card">
           <div class="fi fi-r">
             <svg viewBox="0 0 15 15" fill="none">
               <path d="M7.5 2L13.5 13H1.5L7.5 2Z" stroke="#f97066" stroke-width="1.3" stroke-linejoin="round"/>
@@ -189,13 +193,13 @@
                   <circle class="dtf" cx="45" cy="45" r="36"/>
                 </svg>
                 <div class="dc">
-                  <div class="dn">78</div>
+                  <div class="dn" data-live-percent>78</div>
                   <div class="dp">%</div>
                 </div>
               </div>
               <div class="mi">
                 <div class="mt">Nível de exposição</div>
-                <div class="mv">78%</div>
+                <div class="mv" data-live-percent-label>78%</div>
                 <div class="ms">Risco crítico detectado</div>
                 <div class="bt"><div class="bf"></div></div>
               </div>
@@ -205,7 +209,7 @@
             <div class="db-icol">
               <div class="mc">
                 <div class="mc-l">Fontes encontradas</div>
-                <div class="mc-v">12</div>
+                <div class="mc-v" data-live-sources>12</div>
                 <div class="mc-b mb-bl">↑ +3 novas</div>
               </div>
               <div class="mc">
@@ -219,7 +223,7 @@
             <div class="db-src">
               <div class="sh">
                 <span class="st2">Fontes detectadas</span>
-                <span class="sc">12 total</span>
+                <span class="sc" data-live-total>12 total</span>
               </div>
               <div class="sr">
                 <div class="sl">
@@ -640,6 +644,109 @@
     </div>
   </div>
 </footer>
+
+
+
+<!-- HERO PREMIUM MOTION — Mais Justiça -->
+<script>
+(() => {
+  const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  window.addEventListener('load', () => {
+    if (window.gsap && !reduceMotion) {
+      gsap.set('.hero-reveal', { opacity: 0, y: 28, filter: 'blur(10px)' });
+      gsap.set('.hero-reveal-7', { opacity: 0, y: 24, scale: 0.94, rotateX: 8, filter: 'blur(14px)' });
+
+      const tl = gsap.timeline({ defaults: { ease: 'power4.out' } });
+
+      tl.to('.hero-reveal-1', { opacity: 1, y: 0, filter: 'blur(0px)', duration: 0.55 })
+        .to('.hero-reveal-2', { opacity: 1, y: 0, filter: 'blur(0px)', duration: 0.72 }, '-=0.28')
+        .to('.hero-reveal-3', { opacity: 1, y: 0, filter: 'blur(0px)', duration: 0.72 }, '-=0.52')
+        .to('.hero-reveal-4', { opacity: 1, y: 0, filter: 'blur(0px)', duration: 0.62 }, '-=0.42')
+        .to('.hero-reveal-5', { opacity: 1, y: 0, filter: 'blur(0px)', duration: 0.55 }, '-=0.35')
+        .to('.hero-reveal-6', { opacity: 1, y: 0, filter: 'blur(0px)', duration: 0.55 }, '-=0.32')
+        .to('.hero-reveal-7', { opacity: 1, y: 0, scale: 1, rotateX: 0, filter: 'blur(0px)', duration: 1.05 }, '-=0.75');
+    }
+
+    initHeroParallax();
+    initHeroLivePanel();
+  });
+
+  function initHeroParallax() {
+    const hero = document.querySelector('#hero');
+    const dashboard = document.querySelector('#heroDashboard');
+    const glow = document.querySelector('.hero-cursor-glow');
+    const cards = document.querySelectorAll('.hero-float-card');
+
+    if (!hero || !dashboard || reduceMotion) return;
+
+    let targetX = 0;
+    let targetY = 0;
+    let currentX = 0;
+    let currentY = 0;
+
+    hero.addEventListener('mousemove', (event) => {
+      const rect = hero.getBoundingClientRect();
+      const px = (event.clientX - rect.left) / rect.width - 0.5;
+      const py = (event.clientY - rect.top) / rect.height - 0.5;
+
+      targetX = px * 12;
+      targetY = py * 10;
+
+      if (glow) {
+        glow.style.setProperty('--mx', `${event.clientX - rect.left}px`);
+        glow.style.setProperty('--my', `${event.clientY - rect.top}px`);
+      }
+    });
+
+    hero.addEventListener('mouseleave', () => {
+      targetX = 0;
+      targetY = 0;
+    });
+
+    function render() {
+      currentX += (targetX - currentX) * 0.08;
+      currentY += (targetY - currentY) * 0.08;
+
+      dashboard.style.transform = `perspective(1100px) rotateY(${currentX}deg) rotateX(${-currentY}deg) translate3d(0,0,0)`;
+
+      cards.forEach((card, index) => {
+        const depth = index === 0 ? 1.25 : -1.05;
+        card.style.transform = `translate3d(${currentX * depth}px, ${currentY * depth}px, 38px)`;
+      });
+
+      requestAnimationFrame(render);
+    }
+
+    render();
+  }
+
+  function initHeroLivePanel() {
+    const percent = document.querySelector('[data-live-percent]');
+    const percentLabel = document.querySelector('[data-live-percent-label]');
+    const sources = document.querySelector('[data-live-sources]');
+    const total = document.querySelector('[data-live-total]');
+
+    if (!percent || !percentLabel || reduceMotion) return;
+
+    let value = 78;
+    let sourceValue = 12;
+
+    setInterval(() => {
+      const movement = Math.random() > 0.58 ? 1 : -1;
+      value = Math.max(76, Math.min(82, value + movement));
+      percent.textContent = value;
+      percentLabel.textContent = `${value}%`;
+
+      if (sources && total && Math.random() > 0.72) {
+        sourceValue = sourceValue === 12 ? 13 : 12;
+        sources.textContent = sourceValue;
+        total.textContent = `${sourceValue} total`;
+      }
+    }, 2600);
+  }
+})();
+</script>
 
 <script src="script-home.js"></script>
 </body>
