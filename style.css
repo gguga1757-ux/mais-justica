@@ -1822,6 +1822,8 @@ body:has(button:hover) #cursor-follower {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 18px;
+  flex-wrap: wrap;
   padding-top: 24px;
   border-top: 1px solid rgba(255,255,255,.06);
   font-size: 13px;
@@ -1837,6 +1839,83 @@ body:has(button:hover) #cursor-follower {
   color: var(--green);
   letter-spacing: .04em;
 }
+
+/* Assinatura premium inserida no footer principal */
+.footer-signature {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  max-width: 100%;
+  min-height: 36px;
+  padding: 7px 13px;
+  border: 1px solid rgba(139,92,246,.18);
+  border-radius: 999px;
+  background:
+    linear-gradient(135deg, rgba(255,255,255,.045), rgba(139,92,246,.055)),
+    rgba(255,255,255,.018);
+  box-shadow: 0 0 0 1px rgba(255,255,255,.025) inset;
+  color: rgba(244,246,255,.74);
+  font-size: 12px;
+  line-height: 1.25;
+  white-space: nowrap;
+  transition:
+    color .24s ease,
+    border-color .24s ease,
+    background .24s ease,
+    box-shadow .24s ease,
+    transform .24s ease;
+}
+
+.footer-signature strong {
+  color: var(--text);
+  font-weight: 600;
+  transition: color .24s ease, text-shadow .24s ease;
+}
+
+.footer-signature::after {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  opacity: 0;
+  pointer-events: none;
+  box-shadow:
+    0 0 24px rgba(139,92,246,.24),
+    0 0 18px rgba(16,217,160,.12);
+  transition: opacity .24s ease;
+}
+
+.footer-signature:hover,
+.footer-signature:focus-visible {
+  border-color: rgba(139,92,246,.42);
+  background:
+    linear-gradient(135deg, rgba(139,92,246,.14), rgba(16,217,160,.06)),
+    rgba(255,255,255,.035);
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,.04) inset,
+    0 10px 28px rgba(0,0,0,.26);
+  color: var(--text);
+  transform: translateY(-1px);
+}
+
+.footer-signature:hover strong,
+.footer-signature:focus-visible strong {
+  color: #fff;
+  text-shadow: 0 0 14px rgba(139,92,246,.45);
+}
+
+.footer-signature:hover::after,
+.footer-signature:focus-visible::after {
+  opacity: 1;
+}
+
+.footer-signature:focus-visible {
+  outline: 2px solid rgba(16,217,160,.45);
+  outline-offset: 3px;
+}
+/* Fim da assinatura premium inserida no footer principal */
 
 .status-dot {
   width: 6px; height: 6px;
@@ -2570,6 +2649,14 @@ body.mobile-menu-open .mobile-menu-panel {
   .footer-bottom {
     align-items: flex-start;
     text-align: left;
+  }
+
+  /* Ajuste responsivo da assinatura premium inserida no footer principal */
+  .footer-signature {
+    width: fit-content;
+    white-space: normal;
+    text-align: left;
+    justify-content: flex-start;
   }
 
   .orb {
