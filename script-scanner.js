@@ -26,6 +26,8 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   configurarMascaraCPF();
+  configurarMenuMobile();
+  configurarScannerFixedCta();
   configurarCursorCustom();
 });
 
@@ -618,6 +620,76 @@ function configurarMascaraCPF() {
   cpfInput.dataset.maskAdded = "true";
 }
 
+/* ================================
+   MENU + CTA MOBILE
+================================ */
+function configurarMenuMobile() {
+  const toggle = document.querySelector(".mobile-menu-toggle");
+  const overlay = document.getElementById("mobileMenu");
+  const closeButton = document.querySelector(".mobile-menu-close");
+  const links = document.querySelectorAll(".mobile-menu-links a, .mobile-menu-cta");
+
+  if (!toggle || !overlay || toggle.dataset.menuReady) return;
+
+  const setOpen = (open) => {
+    document.body.classList.toggle("mobile-menu-open", open);
+    toggle.setAttribute("aria-expanded", open ? "true" : "false");
+    overlay.setAttribute("aria-hidden", open ? "false" : "true");
+  };
+
+  toggle.addEventListener("click", () => {
+    setOpen(!document.body.classList.contains("mobile-menu-open"));
+  });
+
+  closeButton?.addEventListener("click", () => setOpen(false));
+
+  overlay.addEventListener("click", (event) => {
+    if (event.target === overlay) setOpen(false);
+  });
+
+  links.forEach((link) => {
+    link.addEventListener("click", () => setOpen(false));
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") setOpen(false);
+  });
+
+  toggle.dataset.menuReady = "true";
+}
+
+function configurarScannerFixedCta() {
+  const fixedCta = document.getElementById("scannerFixedCta");
+  const menuCta = document.querySelector(".scanner-menu-start");
+  const targets = [fixedCta, menuCta].filter(Boolean);
+
+  if (!targets.length) return;
+
+  targets.forEach((button) => {
+    if (button.dataset.ctaReady) return;
+
+    button.addEventListener("click", () => {
+      document.body.classList.remove("mobile-menu-open");
+
+      const box = document.querySelector(".scanner-box");
+      const nomeInput = document.getElementById("nomeInput");
+
+      box?.scrollIntoView({
+        behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches
+          ? "auto"
+          : "smooth",
+        block: "start",
+      });
+
+      setTimeout(() => {
+        nomeInput?.focus({ preventScroll: true });
+      }, 420);
+    });
+
+    button.dataset.ctaReady = "true";
+  });
+}
+
 function formatarCPF(cpf) {
   let v = String(cpf || "").replace(/\D/g, "").slice(0, 11);
 
@@ -688,6 +760,7 @@ function configurarCursorCustom() {
   const cursor = document.getElementById("cursor");
   const follower = document.getElementById("cursor-follower");
 
+  if (window.matchMedia("(max-width: 960px), (pointer: coarse)").matches) return;
   if (!cursor || !follower || cursor.dataset.cursorReady) return;
 
   let mouseX = 0;

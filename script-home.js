@@ -10,6 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initMagneticButtons();
   initTiltCards();
   initHeaderAndFloatingCTA();
+  initMobileMenu();
   initSmoothScroll();
   initFAQ();
   initTrustTrack();
@@ -212,6 +213,8 @@ function moveParallax(e) {
 
 /* MAGNETIC BUTTONS */
 function initMagneticButtons() {
+  if (window.matchMedia("(max-width: 768px), (pointer: coarse)").matches) return;
+
   $$(".magnetic").forEach((btn) => {
     btn.addEventListener("mousemove", (e) => {
       const rect = btn.getBoundingClientRect();
@@ -229,6 +232,8 @@ function initMagneticButtons() {
 
 /* TILT CARDS */
 function initTiltCards() {
+  if (window.matchMedia("(max-width: 768px), (pointer: coarse)").matches) return;
+
   $$(".tilt-card").forEach((card) => {
     card.addEventListener("mousemove", (e) => {
       const rect = card.getBoundingClientRect();
@@ -257,6 +262,7 @@ function initHeaderAndFloatingCTA() {
   const header = $("#header");
   const floatingCta = $("#floatingCta");
   const cta = $("#cta");
+  const mobileQuery = window.matchMedia("(max-width: 768px)");
 
   function updateScrollElements() {
     if (header) {
@@ -264,18 +270,56 @@ function initHeaderAndFloatingCTA() {
     }
 
     if (floatingCta) {
-      floatingCta.classList.toggle("visible", window.scrollY > 420);
+      const isMobile = mobileQuery.matches;
+      floatingCta.classList.toggle("visible", isMobile || window.scrollY > 420);
 
-      if (cta) {
+      if (cta && !isMobile) {
         const rect = cta.getBoundingClientRect();
         const inCta = rect.top < window.innerHeight && rect.bottom > 0;
         floatingCta.classList.toggle("hidden", inCta);
+      } else {
+        floatingCta.classList.remove("hidden");
       }
     }
   }
 
   updateScrollElements();
   window.addEventListener("scroll", updateScrollElements);
+  mobileQuery.addEventListener?.("change", updateScrollElements);
+}
+
+/* MOBILE MENU */
+function initMobileMenu() {
+  const toggle = $(".mobile-menu-toggle");
+  const overlay = $("#mobileMenu");
+  const closeButton = $(".mobile-menu-close");
+  const links = $$(".mobile-menu-links a, .mobile-menu-cta");
+
+  if (!toggle || !overlay) return;
+
+  const setOpen = (open) => {
+    document.body.classList.toggle("mobile-menu-open", open);
+    toggle.setAttribute("aria-expanded", open ? "true" : "false");
+    overlay.setAttribute("aria-hidden", open ? "false" : "true");
+  };
+
+  toggle.addEventListener("click", () => {
+    setOpen(!document.body.classList.contains("mobile-menu-open"));
+  });
+
+  closeButton?.addEventListener("click", () => setOpen(false));
+
+  overlay.addEventListener("click", (event) => {
+    if (event.target === overlay) setOpen(false);
+  });
+
+  links.forEach((link) => {
+    link.addEventListener("click", () => setOpen(false));
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") setOpen(false);
+  });
 }
 
 /* SMOOTH SCROLL */

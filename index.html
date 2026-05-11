@@ -43,7 +43,7 @@
 <div class="grid-overlay"></div>
 
 <!-- FLOATING CTA -->
-<a href="#cta" class="floating-cta" id="floatingCta">
+<a href="scanner.html" class="floating-cta" id="floatingCta">
   <span class="floating-cta-dot"></span>
   🔍 Analisar meu nome
 </a>
@@ -66,8 +66,32 @@
     <a href="#cta" class="btn btn-primary header-btn">
       Analisar meu nome →
     </a>
+    <button class="mobile-menu-toggle" type="button" aria-label="Abrir menu" aria-controls="mobileMenu" aria-expanded="false">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
   </div>
 </header>
+
+<div class="mobile-menu-overlay" id="mobileMenu" aria-hidden="true">
+  <div class="mobile-menu-panel" role="dialog" aria-modal="true" aria-label="Menu principal">
+    <div class="mobile-menu-head">
+      <a href="index.html" class="logo">
+        <img src="assets/logo.png" class="logo-img" alt="Mais JustiÃ§a">
+        <span>Mais JustiÃ§a</span>
+      </a>
+      <button class="mobile-menu-close" type="button" aria-label="Fechar menu">x</button>
+    </div>
+    <nav class="mobile-menu-links">
+      <a href="#how">Como funciona</a>
+      <a href="#benefits">BenefÃ­cios</a>
+      <a href="#proof">Depoimentos</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+    <a href="scanner.html" class="mobile-menu-cta">Analisar meu nome</a>
+  </div>
+</div>
 
 <!-- ══════════════════════════════════════════════ HERO ══ -->
 <section class="hero" id="hero">
@@ -651,9 +675,10 @@
 <script>
 (() => {
   const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const mobileMotion = window.matchMedia && window.matchMedia('(max-width: 768px), (pointer: coarse)').matches;
 
   window.addEventListener('load', () => {
-    if (window.gsap && !reduceMotion) {
+    if (window.gsap && !reduceMotion && !mobileMotion) {
       gsap.set('.hero-reveal', { opacity: 0, y: 28, filter: 'blur(10px)' });
       gsap.set('.hero-reveal-7', { opacity: 0, y: 24, scale: 0.94, rotateX: 8, filter: 'blur(14px)' });
 
@@ -678,7 +703,7 @@
     const glow = document.querySelector('.hero-cursor-glow');
     const cards = document.querySelectorAll('.hero-float-card');
 
-    if (!hero || !dashboard || reduceMotion) return;
+    if (!hero || !dashboard || reduceMotion || mobileMotion) return;
 
     let targetX = 0;
     let targetY = 0;
@@ -727,7 +752,7 @@
     const sources = document.querySelector('[data-live-sources]');
     const total = document.querySelector('[data-live-total]');
 
-    if (!percent || !percentLabel || reduceMotion) return;
+    if (!percent || !percentLabel || reduceMotion || mobileMotion) return;
 
     let value = 78;
     let sourceValue = 12;
