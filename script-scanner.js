@@ -3,7 +3,8 @@
    script-scanner.js
 ===================================================== */
 
-const API_BASE = "https://mais-justica-api.onrender.com";
+const API_BASE =
+  window.MAIS_JUSTICA_API_BASE || "https://mais-justica-api.onrender.com";
 
 let isLoading = false;
 
@@ -123,11 +124,9 @@ async function iniciarVarredura() {
     scanResult.innerHTML = `
       <div class="scan-error">
         <h3>⚠ Erro ao realizar a varredura</h3>
-        <p>${escapeHtml(err.message)}</p>
+        <p>Falha temporaria de comunicacao com a API.</p>
         <p class="scan-sub">
-          Verifique se o servidor está rodando em
-          <strong>${escapeHtml(API_BASE)}</strong>
-          e se a <strong>SERPAPI_KEY</strong> está configurada no <code>.env</code>.
+          Nao foi possivel concluir a analise agora. Tente novamente em alguns minutos.
         </p>
       </div>
     `;

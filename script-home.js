@@ -351,6 +351,8 @@ function initTrustTrack() {
 function initContactForm() {
   const contactForm = $(".contact-form");
   const whatsappInput = $("#whatsapp");
+  const contactApiBase =
+    window.MAIS_JUSTICA_API_BASE || "https://mais-justica-api.onrender.com";
 
   if (whatsappInput) {
     whatsappInput.addEventListener("input", (e) => {
@@ -372,47 +374,52 @@ function initContactForm() {
     });
   }
 
-  if (contactForm) {
-    contactForm.addEventListener("submit", () => {
-      const submitButton = contactForm.querySelector('button[type="submit"]');
+  if (!contactForm || contactForm.dataset.secureHandler === "true") return;
 
-      if (submitButton) {
-        submitButton.disabled = true;
-        submitButton.textContent = "Enviando...";
-        submitButton.style.opacity = "0.75";
-      }
-    });
-  }
-}
+  contactForm.dataset.secureHandler = "true";
 
-contactForm.addEventListener("submit", async (e) => {
-  e.preventDefault();
+  contactForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
 
-  const formData = new FormData(contactForm);
+    const submitButton = contactForm.querySelector('button[type="submit"]');
+    const formData = new FormData(contactForm);
 
-  const data = {
-    nome: formData.get("nome"),
-    email: formData.get("email"),
-    whatsapp: formData.get("whatsapp"),
-    mensagem: formData.get("mensagem"),
-  };
+    const data = {
+      nome: formData.get("nome"),
+      email: formData.get("email"),
+      whatsapp: formData.get("whatsapp"),
+      assunto: formData.get("assunto"),
+      mensagem: formData.get("mensagem"),
+      website: formData.get("website") || "",
+    };
 
-  try {
-    const res = await fetch("https://SEU-BACKEND.onrender.com/send-email", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    });
+    if (submitButton) {
+      submitButton.disabled = true;
+      submitButton.textContent = "Enviando...";
+      submitButton.style.opacity = "0.75";
+    }
 
-    if (res.ok) {
+    try {
+      const res = await fetch(`${contactApiBase}/send-email`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (!res.ok) throw new Error("contact_failed");
+
       alert("Mensagem enviada com sucesso!");
       contactForm.reset();
-    } else {
-      alert("Erro ao enviar.");
+    } catch (_err) {
+      alert("Nao foi possivel enviar agora. Tente novamente em alguns minutos.");
+    } finally {
+      if (submitButton) {
+        submitButton.disabled = false;
+        submitButton.textContent = "Enviar mensagem ->";
+        submitButton.style.opacity = "1";
+      }
     }
-  } catch (err) {
-    alert("Erro de conexão.");
-  }
-});
+  });
+}

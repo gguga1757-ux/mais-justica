@@ -1,2 +1,33 @@
+# Dependências
 node_modules/
+
+# Variáveis sensíveis
 .env
+.env.local
+.env.production
+.env.development
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+
+# Cache / Build
+dist/
+build/
+.cache/
+
+# Vercel
+.vercel/
+
+# Sistema
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Arquivos temporários
+*.tmp
+*.temp

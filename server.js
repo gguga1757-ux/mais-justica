@@ -1,23 +1,64 @@
 require("dotenv").config();
 
 const express = require("express");
-const cors = require("cors");
+const nodemailer = require("nodemailer");
 
-try {
-  require("dotenv").config();
-} catch {}
+const { securityConfig, validateEnvironment } = require("./config/security");
+const {
+  apiKeyAuth,
+  applySecurityMiddleware,
+  jsonBodyParser,
+  originGuard,
+  requestSignatureAuth,
+  urlEncodedBodyParser,
+} = require("./middlewares/security");
+const {
+  apiLimiter,
+  bruteForceLimiter,
+  enumerationDelay,
+  generalLimiter,
+  scanLimiter,
+  scanSlowDown,
+} = require("./middlewares/rateLimit");
+const {
+  contactSchema,
+  escapeHtml,
+  officialProcessSchema,
+  rejectUnsafeQuery,
+  scanSchema,
+  validateBody,
+} = require("./middlewares/validation");
+const {
+  asyncHandler,
+  createHttpError,
+  errorHandler,
+  notFoundHandler,
+} = require("./handlers/errorHandler");
+const logger = require("./utils/logger");
 
 const app = express();
 
-app.use(cors());
-app.use(express.json());
+validateEnvironment(logger);
+
+app.disable("x-powered-by");
+app.set("trust proxy", securityConfig.trustProxy);
+
+applySecurityMiddleware(app);
+app.use(generalLimiter);
+app.use(jsonBodyParser);
+app.use(urlEncodedBodyParser);
+app.use(rejectUnsafeQuery);
+app.use(apiKeyAuth);
+app.use(originGuard);
+app.use(requestSignatureAuth);
+app.use(apiLimiter);
 
 const CONFIG = {
-  serpApiKey: process.env.SERPAPI_KEY || null,
-  port: process.env.PORT || 3000,
-  timeoutMs: 12000,
-  delayMs: 800,
-  minConfidence: 85,
+  serpApiKey: securityConfig.serpApiKey,
+  port: securityConfig.port,
+  timeoutMs: securityConfig.externalTimeoutMs,
+  delayMs: securityConfig.scanDelayMs,
+  minConfidence: securityConfig.minConfidence,
 };
 
 const SEARCH_MODE = CONFIG.serpApiKey ? "serpapi" : "scrape";
@@ -1458,21 +1499,32 @@ function montarRespostaEstruturada({ nome, estado, cpf, results, modo }) {
 }
 
 /**
- * ROTA ORIGINAL — mantida funcionando.
+ * Rotas publicas com hardening de API, validacao e anti-automacao.
  */
-app.post("/scan", async (req, res) => {
+const protectedScanMiddlewares = [
+  scanLimiter,
+  scanSlowDown,
+  enumerationDelay,
+  validateBody(scanSchema),
+];
+
+async function executeScanRoute(req, res, modo, legacyResponse = false) {
   const { nome, estado, cpf } = req.body;
 
-  if (!nome || nome.trim().split(/\s+/).length < 2) {
-    return res.status(400).json({
-      sucesso: false,
-      error: "Nome completo é obrigatório (mínimo nome + sobrenome)",
-    });
-  }
+  logger.audit("scan_started", req, {
+    mode: modo,
+    hasCpf: Boolean(cpf),
+    hasState: Boolean(estado),
+  });
 
-  try {
-    const results = await runScan(nome.trim(), estado?.trim(), cpf?.trim(), "full");
+  const results = await runScan(nome, estado, cpf, modo);
 
+  logger.audit("scan_completed", req, {
+    mode: modo,
+    totalResultados: results.length,
+  });
+
+  if (legacyResponse) {
     return res.json({
       sucesso: true,
       nome,
@@ -1483,209 +1535,137 @@ app.post("/scan", async (req, res) => {
       resultados: results,
       dados: results,
       aviso:
-        "Este sistema identifica possíveis exposições públicas. " +
-        "Não confirma a existência de processos. Consulte sempre um advogado.",
-    });
-  } catch (err) {
-    console.error("[ERROR]", err);
-
-    return res.status(500).json({
-      sucesso: false,
-      error: "Erro interno ao processar varredura",
-    });
-  }
-});
-
-/**
- * NOVA ROTA — exposição geral.
- */
-app.post("/scan-exposure", async (req, res) => {
-  const { nome, estado, cpf } = req.body;
-
-  if (!nome || nome.trim().split(/\s+/).length < 2) {
-    return res.status(400).json({
-      sucesso: false,
-      error: "Nome completo é obrigatório (mínimo nome + sobrenome)",
+        "Este sistema identifica possiveis exposicoes publicas. " +
+        "Nao confirma a existencia de processos. Consulte sempre um advogado.",
     });
   }
 
-  try {
-    const results = await runScan(
-      nome.trim(),
-      estado?.trim(),
-      cpf?.trim(),
-      "exposure"
-    );
+  return res.json(
+    montarRespostaEstruturada({
+      nome,
+      estado,
+      cpf,
+      results,
+      modo,
+    })
+  );
+}
 
-    return res.json(
-      montarRespostaEstruturada({
-        nome,
-        estado,
-        cpf,
-        results,
-        modo: "exposure",
-      })
-    );
-  } catch (err) {
-    console.error("[ERROR /scan-exposure]", err);
+app.post(
+  "/scan",
+  ...protectedScanMiddlewares,
+  asyncHandler((req, res) => executeScanRoute(req, res, "full", true))
+);
 
-    return res.status(500).json({
-      sucesso: false,
-      error: "Erro interno ao processar exposição digital",
-    });
-  }
-});
+app.post(
+  "/scan-exposure",
+  ...protectedScanMiddlewares,
+  asyncHandler((req, res) => executeScanRoute(req, res, "exposure"))
+);
 
-/**
- * NOVA ROTA — foco jurídico.
- */
-app.post("/scan-processes", async (req, res) => {
-  const { nome, estado, cpf } = req.body;
+app.post(
+  "/scan-processes",
+  ...protectedScanMiddlewares,
+  asyncHandler((req, res) => executeScanRoute(req, res, "processes"))
+);
 
-  if (!nome || nome.trim().split(/\s+/).length < 2) {
-    return res.status(400).json({
-      sucesso: false,
-      error: "Nome completo é obrigatório (mínimo nome + sobrenome)",
-    });
-  }
+app.post(
+  "/scan-full",
+  ...protectedScanMiddlewares,
+  asyncHandler((req, res) => executeScanRoute(req, res, "full"))
+);
 
-  try {
-    const results = await runScan(
-      nome.trim(),
-      estado?.trim(),
-      cpf?.trim(),
-      "processes"
-    );
-
-    return res.json(
-      montarRespostaEstruturada({
-        nome,
-        estado,
-        cpf,
-        results,
-        modo: "processes",
-      })
-    );
-  } catch (err) {
-    console.error("[ERROR /scan-processes]", err);
-
-    return res.status(500).json({
-      sucesso: false,
-      error: "Erro interno ao processar análise jurídica",
-    });
-  }
-});
-
-/**
- * NOVA ROTA — relatório completo estruturado.
- */
-app.post("/scan-full", async (req, res) => {
-  const { nome, estado, cpf } = req.body;
-
-  if (!nome || nome.trim().split(/\s+/).length < 2) {
-    return res.status(400).json({
-      sucesso: false,
-      error: "Nome completo é obrigatório (mínimo nome + sobrenome)",
-    });
-  }
-
-  try {
-    const results = await runScan(nome.trim(), estado?.trim(), cpf?.trim(), "full");
-
-    return res.json(
-      montarRespostaEstruturada({
-        nome,
-        estado,
-        cpf,
-        results,
-        modo: "full",
-      })
-    );
-  } catch (err) {
-    console.error("[ERROR /scan-full]", err);
-
-    return res.status(500).json({
-      sucesso: false,
-      error: "Erro interno ao processar relatório completo",
-    });
-  }
-});
-
-/**
- * Rota futura para validação oficial.
- */
-app.post("/verificar-processo-oficial", async (req, res) => {
-  const { numero } = req.body;
-
-  if (!numero) {
-    return res.status(400).json({
-      sucesso: false,
-      error: "Número do processo é obrigatório",
-    });
-  }
-
-  try {
-    const resultado = await verificarProcessoOficial(numero);
+app.post(
+  "/verificar-processo-oficial",
+  bruteForceLimiter,
+  enumerationDelay,
+  validateBody(officialProcessSchema),
+  asyncHandler(async (req, res) => {
+    const resultado = await verificarProcessoOficial(req.body.numero);
 
     return res.json({
       sucesso: true,
       resultado,
     });
-  } catch (err) {
-    console.error("[ERROR /verificar-processo-oficial]", err);
+  })
+);
 
-    return res.status(500).json({
-      sucesso: false,
-      error: "Erro ao verificar processo oficial",
+app.post(
+  "/send-email",
+  bruteForceLimiter,
+  validateBody(contactSchema),
+  asyncHandler(async (req, res) => {
+    const { nome, email, whatsapp, assunto, mensagem } = req.body;
+
+    if (!securityConfig.emailUser || !securityConfig.emailPass) {
+      throw createHttpError(
+        503,
+        "Servico de contato indisponivel.",
+        "EMAIL_NOT_CONFIGURED"
+      );
+    }
+
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: securityConfig.emailUser,
+        pass: securityConfig.emailPass,
+      },
     });
-  }
-});
+
+    const safeSubject = assunto || "Novo contato do site";
+
+    await transporter.sendMail({
+      from: `"Site Mais Justica" <${securityConfig.emailUser}>`,
+      replyTo: email,
+      to: securityConfig.contactToEmail,
+      subject: safeSubject,
+      text: [
+        "Novo lead",
+        `Nome: ${nome}`,
+        `Email: ${email}`,
+        `WhatsApp: ${whatsapp || "Nao informado"}`,
+        `Assunto: ${safeSubject}`,
+        `Mensagem: ${mensagem}`,
+      ].join("\n"),
+      html: `
+        <h2>Novo lead</h2>
+        <p><b>Nome:</b> ${escapeHtml(nome)}</p>
+        <p><b>Email:</b> ${escapeHtml(email)}</p>
+        <p><b>WhatsApp:</b> ${escapeHtml(whatsapp || "Nao informado")}</p>
+        <p><b>Assunto:</b> ${escapeHtml(safeSubject)}</p>
+        <p><b>Mensagem:</b> ${escapeHtml(mensagem)}</p>
+      `,
+    });
+
+    logger.audit("contact_email_sent", req);
+    return res.json({ sucesso: true });
+  })
+);
 
 app.get("/health", (_req, res) => {
   res.json({
     status: "ok",
     searchMode: SEARCH_MODE,
-    serpApiKey: CONFIG.serpApiKey
-      ? "configurada ✓"
-      : "não configurada (modo scrape)",
-    rotas: [
-      "POST /scan",
-      "POST /scan-exposure",
-      "POST /scan-processes",
-      "POST /scan-full",
-      "POST /verificar-processo-oficial",
-      "GET /health",
-    ],
+    externalSearch: CONFIG.serpApiKey ? "configured" : "scrape-fallback",
     timestamp: new Date().toISOString(),
   });
 });
 
-app.use((err, _req, res, _next) => {
-  console.error("[UNHANDLED ERROR]", err);
+app.use(notFoundHandler);
+app.use(errorHandler);
 
-  res.status(500).json({
-    sucesso: false,
-    error: "Erro inesperado no servidor",
+const server = app.listen(CONFIG.port, () => {
+  logger.info({
+    event: "server_started",
+    port: CONFIG.port,
+    searchMode: SEARCH_MODE,
+    nodeEnv: securityConfig.nodeEnv,
   });
 });
 
-app.listen(CONFIG.port, () => {
-  console.log(`\n🔍 Legal Exposure Scanner`);
-  console.log(`   Port       : ${CONFIG.port}`);
-  console.log(
-    `   Search mode: ${SEARCH_MODE.toUpperCase()}${
-      SEARCH_MODE === "scrape"
-        ? "  ⚠ (defina SERPAPI_KEY para usar SerpApi)"
-        : "  ✓"
-    }`
-  );
-  console.log(`   POST /scan                    → executar varredura original`);
-  console.log(`   POST /scan-exposure           → análise de exposição`);
-  console.log(`   POST /scan-processes          → análise jurídica`);
-  console.log(`   POST /scan-full               → relatório completo`);
-  console.log(`   POST /verificar-processo-oficial → placeholder CNJ`);
-  console.log(`   GET  /health                  → status do servidor\n`);
-});
+server.requestTimeout = securityConfig.requestTimeoutMs;
+server.headersTimeout = securityConfig.requestTimeoutMs + 5000;
 
 function calcularMatchAvancado({ nome, estado, title, snippet, html }) {
   const nameMatch = compareNameInFields({
@@ -1776,36 +1756,3 @@ function cruzarResultados(resultados) {
   });
 }
 
-const nodemailer = require("nodemailer");
-
-app.post("/send-email", async (req, res) => {
-  const { nome, email, whatsapp, mensagem } = req.body;
-
-  try {
-    const transporter = nodemailer.createTransport({
-      service: "gmail",
-      auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS
-      }
-    });
-
-    await transporter.sendMail({
-      from: `"Site Mais Justiça" <${process.env.EMAIL_USER}>`,
-      to: "seuemail@gmail.com",
-      subject: "Novo contato do site",
-      html: `
-        <h2>Novo lead</h2>
-        <p><b>Nome:</b> ${nome}</p>
-        <p><b>Email:</b> ${email}</p>
-        <p><b>WhatsApp:</b> ${whatsapp}</p>
-        <p><b>Mensagem:</b> ${mensagem}</p>
-      `
-    });
-
-    res.json({ success: true });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "Erro ao enviar email" });
-  }
-});
