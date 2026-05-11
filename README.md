@@ -1,6 +1,10 @@
 # Mais Justiça
 
-Plataforma de análise e monitoramento de exposição de dados pessoais em fontes públicas, com classificação de risco e foco em conformidade com a LGPD.
+> Plataforma de análise e monitoramento de exposição de dados pessoais em fontes públicas, com classificação de risco e foco em conformidade com a LGPD.
+
+<div align="center">
+  <img src="assets/hero-preview.png" alt="Mais Justiça Preview" width="100%">
+</div>
 
 ---
 
@@ -144,9 +148,9 @@ Este sistema:
 
 * Validação de entrada no frontend e backend
 * Sanitização de dados (anti XSS)
-* Uso de variáveis de ambiente (.env)
+* Uso de variáveis de ambiente (`.env`)
 * Timeout de requisições externas
-* Tratamento de erros com try/catch
+* Tratamento de erros com `try/catch`
 
 ---
 
@@ -163,7 +167,7 @@ Este sistema:
 
 ## 👨‍💻 Autor
 
-Gustavo Henrique
+**Gustavo Henrique**
 Projeto focado em privacidade digital e reputação online.
 
 ---
