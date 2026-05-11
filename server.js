@@ -163,32 +163,214 @@ const WEAK_LEGAL_TERMS = [
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
+const NAME_MATCH_LEVELS = {
+  EXACT_NAME: "EXACT_NAME",
+  STRONG_NAME: "STRONG_NAME",
+  WEAK_NAME: "WEAK_NAME",
+  NO_MATCH: "NO_MATCH",
+};
+
+const NAME_CONNECTORS = new Set([
+  "da",
+  "de",
+  "di",
+  "do",
+  "du",
+  "das",
+  "dos",
+  "e",
+]);
+
 function normalizeName(name = "") {
   return String(name)
     .toLowerCase()
     .normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "")
+    .replace(/\s+/g, " ")
     .trim();
 }
 
+function normalizeForNameMatch(text = "") {
+  return normalizeName(text)
+    .replace(/[^a-z0-9\s]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function stripHtmlForNameMatch(html = "") {
+  return String(html || "")
+    .replace(/<script[\s\S]*?<\/script>/gi, " ")
+    .replace(/<style[\s\S]*?<\/style>/gi, " ")
+    .replace(/<[^>]+>/g, " ");
+}
+
+function getMainNameParts(nome = "") {
+  return normalizeForNameMatch(nome)
+    .split(" ")
+    .filter((part) => part.length > 2 && !NAME_CONNECTORS.has(part));
+}
+
+function hasAllPartsClose(tokens, parts) {
+  if (!tokens.length || !parts.length) return false;
+
+  const needed = new Set(parts);
+  const maxWindow = Math.min(
+    18,
+    Math.max(parts.length + 4, parts.length * 3)
+  );
+
+  for (let start = 0; start < tokens.length; start++) {
+    const found = new Set();
+
+    for (
+      let cursor = start;
+      cursor < tokens.length && cursor < start + maxWindow;
+      cursor++
+    ) {
+      if (needed.has(tokens[cursor])) {
+        found.add(tokens[cursor]);
+      }
+
+      if (found.size === needed.size) {
+        return true;
+      }
+    }
+  }
+
+  return false;
+}
+
+function compareNameStrict(nome, texto = "") {
+  const normalizedName = normalizeForNameMatch(nome);
+  const normalizedText = normalizeForNameMatch(texto);
+  const mainParts = getMainNameParts(nome);
+
+  if (!normalizedName || !normalizedText || !mainParts.length) {
+    return {
+      level: NAME_MATCH_LEVELS.NO_MATCH,
+      score: 0,
+      exact: false,
+      matchedParts: [],
+      missingParts: mainParts,
+      totalMainParts: mainParts.length,
+    };
+  }
+
+  const tokens = normalizedText.split(" ").filter(Boolean);
+  const tokenSet = new Set(tokens);
+  const matchedParts = mainParts.filter((part) => tokenSet.has(part));
+  const missingParts = mainParts.filter((part) => !tokenSet.has(part));
+  const exact = ` ${normalizedText} `.includes(` ${normalizedName} `);
+
+  if (exact) {
+    return {
+      level: NAME_MATCH_LEVELS.EXACT_NAME,
+      score: 65,
+      exact: true,
+      matchedParts,
+      missingParts: [],
+      totalMainParts: mainParts.length,
+    };
+  }
+
+  if (
+    missingParts.length === 0 &&
+    hasAllPartsClose(tokens, mainParts)
+  ) {
+    return {
+      level: NAME_MATCH_LEVELS.STRONG_NAME,
+      score: 45,
+      exact: false,
+      matchedParts,
+      missingParts: [],
+      totalMainParts: mainParts.length,
+    };
+  }
+
+  if (matchedParts.length > 0) {
+    return {
+      level: NAME_MATCH_LEVELS.WEAK_NAME,
+      score: 10,
+      exact: false,
+      matchedParts,
+      missingParts,
+      totalMainParts: mainParts.length,
+    };
+  }
+
+  return {
+    level: NAME_MATCH_LEVELS.NO_MATCH,
+    score: 0,
+    exact: false,
+    matchedParts: [],
+    missingParts,
+    totalMainParts: mainParts.length,
+  };
+}
+
+function bestNameMatch(...matches) {
+  const order = {
+    [NAME_MATCH_LEVELS.EXACT_NAME]: 4,
+    [NAME_MATCH_LEVELS.STRONG_NAME]: 3,
+    [NAME_MATCH_LEVELS.WEAK_NAME]: 2,
+    [NAME_MATCH_LEVELS.NO_MATCH]: 1,
+  };
+
+  return matches.reduce(
+    (best, current) =>
+      order[current.level] > order[best.level] ? current : best,
+    {
+      level: NAME_MATCH_LEVELS.NO_MATCH,
+      score: 0,
+      exact: false,
+      matchedParts: [],
+      missingParts: [],
+      totalMainParts: 0,
+    }
+  );
+}
+
+function compareNameInFields({ nome, title, snippet, html }) {
+  const htmlText = html ? stripHtmlForNameMatch(html) : "";
+  const titleMatch = compareNameStrict(nome, title || "");
+  const snippetMatch = compareNameStrict(nome, snippet || "");
+  const htmlMatch = compareNameStrict(nome, htmlText);
+  const combinedMatch = compareNameStrict(
+    nome,
+    `${title || ""} ${snippet || ""} ${htmlText}`
+  );
+  const best = bestNameMatch(
+    titleMatch,
+    snippetMatch,
+    htmlMatch,
+    combinedMatch
+  );
+
+  return {
+    ...best,
+    locations: {
+      title: titleMatch.level,
+      snippet: snippetMatch.level,
+      html: html ? htmlMatch.level : NAME_MATCH_LEVELS.NO_MATCH,
+      combined: combinedMatch.level,
+    },
+  };
+}
+
+function isReliableNameMatch(level) {
+  return (
+    level === NAME_MATCH_LEVELS.EXACT_NAME ||
+    level === NAME_MATCH_LEVELS.STRONG_NAME
+  );
+}
+
 function nameInText(nome, texto) {
-  if (!nome || !texto) return false;
+  return isReliableNameMatch(compareNameStrict(nome, texto).level);
+}
 
-  const n = normalizeName(nome);
-  const t = normalizeName(texto);
-
-  if (t.includes(n)) return true;
-
-  const partes = n.split(" ").filter((p) => p.length > 2);
-  if (!partes.length) return false;
-
-  let matches = 0;
-
-  partes.forEach((p) => {
-    if (t.includes(p)) matches++;
-  });
-
-  return matches / partes.length >= 0.8;
+function isTrustedLegalSource(url = "") {
+  const src = getSourceInfo(url);
+  return ["juridica_agregadora", "oficial_juridica"].includes(src.category);
 }
 
 function cpfVariations(cpf) {
@@ -202,8 +384,6 @@ function cpfVariations(cpf) {
     `${d.slice(0, 3)}.${d.slice(3, 6)}.${d.slice(6, 9)}-${d.slice(9)}`,
     `${d.slice(0, 3)}.***.***-${d.slice(9)}`,
     `***.***.${d.slice(6, 9)}-${d.slice(9)}`,
-    d.slice(0, 6),
-    d.slice(0, 9),
   ];
 }
 
@@ -377,6 +557,7 @@ function classificarResultadoAvancado({
   evidence,
   processNumbers,
   cpfResult,
+  nameMatch,
 }) {
   const src = getSourceInfo(url);
 
@@ -400,8 +581,16 @@ function classificarResultadoAvancado({
     term.test(textoCompleto)
   );
 
-  const nomeConfirmado =
-    nameInText(nome, title) || nameInText(nome, snippet) || nameInText(nome, html);
+  const nomeMatch =
+    nameMatch ||
+    compareNameInFields({
+      nome,
+      title,
+      snippet,
+      html,
+    });
+
+  const nomeConfirmado = isReliableNameMatch(nomeMatch.level);
 
   let tipo = "EXPOSICAO_DADOS";
   let statusValidacao = "POSSIVEL_EXPOSICAO";
@@ -453,6 +642,7 @@ function classificarResultadoAvancado({
     acaoRemocao,
     prioridade,
     nomeConfirmado,
+    nameMatchLevel: nomeMatch.level,
     possuiNumeroCNJ,
     fonteCategoria: src.category || "geral",
     observacaoAnalise: gerarObservacaoAnalise({
@@ -537,7 +727,6 @@ function generateQueries(nome, estado, cpf, modo = "full") {
 
   if (incluirProcessos) {
     queries.push(
-      // 🔥 FONTES PRINCIPAIS — mantidas
       `site:jusbrasil.com.br ${q}`,
       `site:jusbrasil.com.br ${q} processo`,
       `site:jusbrasil.com.br ${q}${st}`,
@@ -546,16 +735,16 @@ function generateQueries(nome, estado, cpf, modo = "full") {
       `site:escavador.com ${q} processo`,
       `site:escavador.com ${q}${st}`,
 
-      // 🔥 APOIO CONTROLADO — mantido
       `site:verificaprocesso.com ${q}`,
       `site:processoweb.com.br ${q}`,
 
-      // 🔥 Novas buscas jurídicas
       `${q} processo`,
-      `${q} processo judicial`,
-      `${q} tribunal`,
+      `${q} jusbrasil`,
+      `${q} escavador`,
       `${q} diário oficial`,
       `${q} diario oficial`,
+      `${q} processo judicial`,
+      `${q} tribunal`,
       `site:jus.br ${q}`,
       `site:gov.br ${q} processo`
     );
@@ -563,7 +752,6 @@ function generateQueries(nome, estado, cpf, modo = "full") {
 
   if (incluirExposicao) {
     queries.push(
-      // 🔎 Exposição geral
       `${q}`,
       `${q} CPF`,
       `${q} telefone`,
@@ -737,6 +925,13 @@ function scoreResult({ nome, url, title, snippet, html, cpf }) {
 
   const fullText = `${title || ""} ${snippet || ""} ${html || ""}`;
   const texto = fullText.toLowerCase();
+  const src = getSourceInfo(url);
+  const nameMatch = compareNameInFields({
+    nome,
+    title,
+    snippet,
+    html,
+  });
 
   if (
     texto.includes("significado do nome") ||
@@ -755,20 +950,17 @@ function scoreResult({ nome, url, title, snippet, html, cpf }) {
         masked: null,
       },
       dadosSensiveis: detectarDadosSensiveis("", cpf),
+      nameMatch,
+      approval: {
+        approved: false,
+        byName: false,
+        byCpf: false,
+        byCnj: false,
+        hasStrongLegalEvidence: false,
+      },
+      discardReason: "pagina generica ou rede social",
     };
   }
-
-  const nomeNormal = normalizeName(nome);
-  const textoNormal = normalizeName(fullText);
-  const partes = nomeNormal.split(" ").filter((p) => p.length > 2);
-
-  let matches = 0;
-
-  partes.forEach((p) => {
-    if (textoNormal.includes(p)) matches++;
-  });
-
-  const proporcaoNome = partes.length ? matches / partes.length : 0;
 
   const processNumbers = extractProcessNumbers(fullText);
 
@@ -782,93 +974,47 @@ function scoreResult({ nome, url, title, snippet, html, cpf }) {
 
   const dadosSensiveis = detectarDadosSensiveis(fullText, cpf);
 
-  const matchScore = calcularMatchAvancado({
-    nome,
-    estado: "",
-    title,
-    snippet,
-    html,
-  });
-
-  if (proporcaoNome < 0.7 && !cpfCheck.found && processNumbers.length === 0) {
-    return {
-      score: 0,
-      evidence: [],
-      processNumbers: [],
-      cpfResult: cpfCheck,
-      dadosSensiveis,
-    };
+  if (nameMatch.level === NAME_MATCH_LEVELS.EXACT_NAME) {
+    score += 45;
+    evidence.push("EXACT_NAME: nome completo exato");
+  } else if (nameMatch.level === NAME_MATCH_LEVELS.STRONG_NAME) {
+    score += 35;
+    evidence.push("STRONG_NAME: todas as partes principais proximas");
+  } else if (nameMatch.level === NAME_MATCH_LEVELS.WEAK_NAME) {
+    score += 5;
+    evidence.push(
+      `WEAK_NAME: partes encontradas (${nameMatch.matchedParts.join(", ")})`
+    );
+  } else {
+    evidence.push("NO_MATCH: nome nao encontrado");
   }
 
-  if (!cpfCheck.found && processNumbers.length === 0 && proporcaoNome < 0.8) {
-    return {
-      score: 0,
-      evidence: [],
-      processNumbers: [],
-      cpfResult: cpfCheck,
-      dadosSensiveis,
-    };
-  }
-
-  const nameInTitle = nameInText(nome, title);
-  const nameInSnippet = nameInText(nome, snippet);
-  const nameInHtml = html ? nameInText(nome, html) : false;
-
-  /**
-   * Bloqueio preservado:
-   * precisa ter nome no título/snippet OU CPF encontrado.
-   */
-  if (!nameInTitle && !nameInSnippet && !cpfCheck.found) {
-    return {
-      score: 0,
-      evidence: [],
-      processNumbers: [],
-      cpfResult: cpfCheck,
-      dadosSensiveis,
-    };
-  }
-
-  if (!nameInTitle && !nameInSnippet && proporcaoNome < 0.8) {
-    return {
-      score: 0,
-      evidence: [],
-      processNumbers: [],
-      cpfResult: cpfCheck,
-      dadosSensiveis,
-    };
-  }
-
-  if (html && !nameInHtml) {
-    return {
-      score: 0,
-      evidence: [],
-      processNumbers: [],
-      cpfResult: cpfCheck,
-      dadosSensiveis,
-    };
-  }
-
-  if (nameInTitle) {
-    score += 20;
-    evidence.push("nome no título");
-  }
-
-  if (nameInSnippet) {
-    score += 10;
-    evidence.push("nome no snippet");
-  }
-
-  if (nameInHtml) {
+  if (isReliableNameMatch(nameMatch.locations.title)) {
     score += 15;
-    evidence.push("nome confirmado na página");
+    evidence.push(`nome no titulo (${nameMatch.locations.title})`);
   }
 
-  for (const term of STRONG_LEGAL_TERMS) {
-    if (term.test(fullText)) {
-      score += 15;
-      evidence.push("termo jurídico forte");
-      break;
-    }
+  if (isReliableNameMatch(nameMatch.locations.snippet)) {
+    score += 10;
+    evidence.push(`nome no snippet (${nameMatch.locations.snippet})`);
+  }
+
+  if (isReliableNameMatch(nameMatch.locations.html)) {
+    score += 10;
+    evidence.push(`nome confirmado na pagina (${nameMatch.locations.html})`);
+  }
+
+  const possuiTermoJuridicoForte = STRONG_LEGAL_TERMS.some((term) =>
+    term.test(fullText)
+  );
+
+  const possuiTermoJuridicoForteSemCnj = STRONG_LEGAL_TERMS.some(
+    (term) => !term.toString().includes("\\d{7}") && term.test(fullText)
+  );
+
+  if (possuiTermoJuridicoForte) {
+    score += 15;
+    evidence.push("termo juridico forte");
   }
 
   const weakCount = WEAK_LEGAL_TERMS.filter((t) => t.test(fullText)).length;
@@ -879,40 +1025,75 @@ function scoreResult({ nome, url, title, snippet, html, cpf }) {
   }
 
   if (processNumbers.length > 0) {
-    score += 20;
+    score += 25;
     evidence.push(`número CNJ: ${processNumbers[0]}`);
   }
-
-  const src = getSourceInfo(url);
 
   score += src.weight;
   evidence.push(`fonte: ${src.name}`);
 
   const cpfResult = cpfCheck;
 
-  /**
-   * Regra nova solicitada:
-   * +30 CPF encontrado.
-   * Mantive próximo do seu +35 original, mas ajustado para +30.
-   */
-  if (cpfResult.found || dadosSensiveis.cpf) {
-    score += 30;
-    evidence.push("CPF encontrado na página");
+  if (cpfResult.found) {
+    score += 35;
+    evidence.push("CPF informado encontrado na pagina");
+  } else if (dadosSensiveis.cpf && isReliableNameMatch(nameMatch.level)) {
+    score += 20;
+    evidence.push("CPF detectado no conteudo");
   }
 
-  /**
-   * Regra nova:
-   * +15 nome confirmado.
-   */
-  if (nameInTitle || nameInSnippet || nameInHtml) {
-    score += 15;
-    evidence.push("nome confirmado");
+  if (isReliableNameMatch(nameMatch.level)) {
+    score += 10;
+    evidence.push("nome confirmado por match rigido");
   }
 
-  score += Math.min(matchScore, 30);
+  const hasStrongLegalEvidence =
+    possuiTermoJuridicoForteSemCnj ||
+    weakCount >= 2 ||
+    ["juridica_agregadora", "oficial_juridica"].includes(src.category);
+
+  const approval = {
+    byName: isReliableNameMatch(nameMatch.level),
+    byCpf: cpfResult.found,
+    byCnj:
+      processNumbers.length > 0 &&
+      hasStrongLegalEvidence &&
+      nameMatch.level !== NAME_MATCH_LEVELS.WEAK_NAME,
+    hasStrongLegalEvidence,
+  };
+
+  approval.approved = approval.byName || approval.byCpf || approval.byCnj;
+
+  if (approval.byCpf) {
+    score = Math.max(score, 92);
+  }
+
+  if (nameMatch.level === NAME_MATCH_LEVELS.EXACT_NAME) {
+    score = Math.max(score, 88);
+  }
+
+  if (nameMatch.level === NAME_MATCH_LEVELS.STRONG_NAME) {
+    score = Math.max(score, 85);
+  }
+
+  if (approval.byCnj) {
+    score = Math.max(score, 85);
+  }
 
   if (isGenericNamePage(url, title)) score -= 30;
   if (url.includes("/search")) score -= 20;
+
+  let discardReason = null;
+
+  if (!approval.approved) {
+    if (nameMatch.level === NAME_MATCH_LEVELS.WEAK_NAME) {
+      discardReason =
+        "nome parcial: faltam partes principais do nome completo";
+    } else {
+      discardReason =
+        "sem EXACT_NAME/STRONG_NAME, sem CPF informado e sem CNJ com evidencia juridica forte";
+    }
+  }
 
   return {
     score: Math.max(0, Math.min(100, score)),
@@ -920,13 +1101,19 @@ function scoreResult({ nome, url, title, snippet, html, cpf }) {
     processNumbers,
     cpfResult,
     dadosSensiveis,
+    nameMatch,
+    approval,
+    discardReason,
   };
 }
 
 const scoreToRisk = (s) => (s >= 70 ? "alto" : s >= 50 ? "medio" : "baixo");
 
-const scoreToMatchLevel = (score, cpfOk, matchScore = 0) => {
+const scoreToMatchLevel = (score, cpfOk, matchScore = 0, nameMatchLevel = "") => {
   if (cpfOk) return "forte";
+  if (nameMatchLevel === NAME_MATCH_LEVELS.EXACT_NAME) return "exato";
+  if (nameMatchLevel === NAME_MATCH_LEVELS.STRONG_NAME) return "forte";
+  if (nameMatchLevel === NAME_MATCH_LEVELS.WEAK_NAME) return "fraco";
   if (matchScore > 50) return "forte";
   if (matchScore > 30) return "medio";
   if (score >= 85) return "medio";
@@ -959,13 +1146,13 @@ function aplicarBonusCruzamento(resultados) {
         Array.isArray(other.processNumbers) &&
         r.processNumbers.some((p) => other.processNumbers.includes(p));
 
-      const mesmoDominio =
+      const fontesDiferentes =
         r.source &&
         other.source &&
         normalizeName(r.source) !== normalizeName(other.source);
 
-      if (mesmoTitulo || mesmoProcesso || mesmoDominio) {
-        boost += 10;
+      if (mesmoProcesso || (mesmoTitulo && fontesDiferentes)) {
+        boost += fontesDiferentes ? 10 : 5;
       }
     });
 
@@ -994,9 +1181,24 @@ async function runScan(nome, estado, cpf, modo = "full") {
     const hits = await search(query);
 
     for (const hit of hits) {
-      if (hit.url && !seen.has(hit.url) && !isBlocklisted(hit.url)) {
+      if (!hit.url) continue;
+
+      if (isBlocklisted(hit.url)) {
+        console.log(`  [DISCARD] ${hit.url} | motivo: blocklist`);
+        continue;
+      }
+
+      if (seen.has(hit.url)) {
+        continue;
+      }
+
+      if (hit.url && !seen.has(hit.url)) {
         seen.add(hit.url);
-        rawResults.push(hit);
+        rawResults.push({
+          ...hit,
+          query,
+        });
+        console.log(`  [FOUND] ${hit.url}`);
       }
     }
 
@@ -1007,7 +1209,7 @@ async function runScan(nome, estado, cpf, modo = "full") {
 
   const processed = [];
 
-  for (const { url, title, snippet } of rawResults) {
+  for (const { url, title, snippet, query } of rawResults) {
     const pre = scoreResult({
       nome,
       url,
@@ -1017,13 +1219,47 @@ async function runScan(nome, estado, cpf, modo = "full") {
       cpf,
     });
 
-    if (pre.score < 10) continue;
+    console.log(
+      `  [PRE] ${url} | match=${pre.nameMatch.level} | score=${pre.score}`
+    );
+
+    if (
+      !pre.approval.approved &&
+      pre.nameMatch.level === NAME_MATCH_LEVELS.NO_MATCH &&
+      !isTrustedLegalSource(url)
+    ) {
+      console.log(
+        `  [DISCARD] ${url} | motivo: ${pre.discardReason} | score=${pre.score}`
+      );
+      continue;
+    }
+
+    if (pre.score < 10 && !isTrustedLegalSource(url)) {
+      console.log(
+        `  [DISCARD] ${url} | motivo: pre-score baixo | score=${pre.score}`
+      );
+      continue;
+    }
 
     await sleep(300);
 
     const html = await fetchPageHtml(url);
 
-    const { score, evidence, processNumbers, cpfResult } = scoreResult({
+    if (!html && isTrustedLegalSource(url)) {
+      console.log(
+        `  [HTML] ${url} | falhou; usando titulo/snippet como fallback`
+      );
+    }
+
+    const {
+      score,
+      evidence,
+      processNumbers,
+      cpfResult,
+      nameMatch,
+      approval,
+      discardReason,
+    } = scoreResult({
       nome,
       url,
       title,
@@ -1032,7 +1268,23 @@ async function runScan(nome, estado, cpf, modo = "full") {
       cpf,
     });
 
-        if (score < CONFIG.minConfidence) continue;
+    console.log(
+      `  [ANALYZE] ${url} | query="${query}" | match=${nameMatch.level} | title=${nameMatch.locations.title} | snippet=${nameMatch.locations.snippet} | html=${nameMatch.locations.html} | score=${score}`
+    );
+
+    if (!approval.approved) {
+      console.log(
+        `  [DISCARD] ${url} | motivo: ${discardReason} | score=${score}`
+      );
+      continue;
+    }
+
+    if (score < CONFIG.minConfidence) {
+      console.log(
+        `  [DISCARD] ${url} | motivo: score abaixo do minimo (${CONFIG.minConfidence}) | match=${nameMatch.level} | score=${score}`
+      );
+      continue;
+    }
 
     const src = getSourceInfo(url);
     const risk = scoreToRisk(score);
@@ -1045,27 +1297,12 @@ async function runScan(nome, estado, cpf, modo = "full") {
       html,
     });
 
-    const matchLevel = scoreToMatchLevel(score, cpfResult.found, matchScore);
-    const evidenceText = evidence.join(" ").toLowerCase();
-
-    if (score < 60 && processNumbers.length === 0) continue;
-    if (matchLevel === "fraco") continue;
-
-    if (
-      evidenceText.includes("nome no snippet") &&
-      !evidenceText.includes("nome confirmado na página") &&
-      processNumbers.length === 0 &&
-      !cpfResult.found
-    ) {
-      continue;
-    }
-
-    const nomeOuCpfBateNoResultado =
-      nameInText(nome, title) ||
-      nameInText(nome, snippet) ||
-      cpfResult.found;
-
-    if (!nomeOuCpfBateNoResultado) continue;
+    const matchLevel = scoreToMatchLevel(
+      score,
+      cpfResult.found,
+      matchScore,
+      nameMatch.level
+    );
 
     const analiseAvancada = classificarResultadoAvancado({
       nome,
@@ -1079,7 +1316,12 @@ async function runScan(nome, estado, cpf, modo = "full") {
       evidence,
       processNumbers,
       cpfResult,
+      nameMatch,
     });
+
+    console.log(
+      `  [ACCEPT] ${url} | match=${nameMatch.level} | score final=${score}`
+    );
 
     processed.push({
       source: src.name,
@@ -1095,6 +1337,8 @@ async function runScan(nome, estado, cpf, modo = "full") {
       cpfMascarado: cpfResult.masked || null,
 
       matchLevel,
+      nameMatchLevel: nameMatch.level,
+      nameMatch,
       processNumbers,
       evidence,
 
@@ -1122,6 +1366,12 @@ async function runScan(nome, estado, cpf, modo = "full") {
   );
 
   const cruzado = cruzarResultados(aplicarBonusCruzamento(processed));
+
+  cruzado.forEach((r) => {
+    console.log(
+      `  [FINAL] ${r.url} | match=${r.nameMatchLevel} | score final=${r.confidence}`
+    );
+  });
 
   return cruzado.map((r) => ({
     ...r,
@@ -1438,26 +1688,18 @@ app.listen(CONFIG.port, () => {
 });
 
 function calcularMatchAvancado({ nome, estado, title, snippet, html }) {
-  const texto = `${title || ""} ${snippet || ""} ${html || ""}`.toLowerCase();
-  const nomeNormal = normalizeName(nome);
-  const textoNormal = normalizeName(texto);
-
-  let score = 0;
-
-  if (textoNormal.includes(nomeNormal)) {
-    score += 40;
-  }
-
-  const partes = nomeNormal.split(" ").filter((p) => p.length > 2);
-  let matches = 0;
-
-  partes.forEach((p) => {
-    if (textoNormal.includes(p)) matches++;
+  const nameMatch = compareNameInFields({
+    nome,
+    title,
+    snippet,
+    html,
   });
 
-  const proporcao = partes.length ? matches / partes.length : 0;
+  let score = nameMatch.score;
 
-  if (proporcao >= 0.8) score += 20;
+  const textoNormal = normalizeForNameMatch(
+    `${title || ""} ${snippet || ""} ${stripHtmlForNameMatch(html || "")}`
+  );
 
   if (estado && textoNormal.includes(normalizeName(estado))) {
     score += 15;
@@ -1467,24 +1709,18 @@ function calcularMatchAvancado({ nome, estado, title, snippet, html }) {
 }
 
 function calcularIdentidade({ nome, estado, html, title, snippet }) {
-  const texto = normalizeName(`${title || ""} ${snippet || ""} ${html || ""}`);
-  const nomeBase = normalizeName(nome);
-
-  let score = 0;
-
-  if (texto.includes(nomeBase)) score += 50;
-
-  const partes = nomeBase.split(" ").filter((p) => p.length > 2);
-  let match = 0;
-
-  partes.forEach((p) => {
-    if (texto.includes(p)) match++;
+  const nameMatch = compareNameInFields({
+    nome,
+    title,
+    snippet,
+    html,
   });
 
-  const proporcao = partes.length ? match / partes.length : 0;
+  let score = nameMatch.score;
 
-  if (proporcao > 0.8) score += 25;
-  else if (proporcao > 0.6) score += 15;
+  const texto = normalizeForNameMatch(
+    `${title || ""} ${snippet || ""} ${stripHtmlForNameMatch(html || "")}`
+  );
 
   if (estado && texto.includes(normalizeName(estado))) {
     score += 15;
